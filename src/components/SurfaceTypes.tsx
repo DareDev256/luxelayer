@@ -43,7 +43,7 @@ export default function SurfaceTypes() {
             Every Premium Surface
           </h2>
           <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Our PPF is engineered for the unique challenges of each material.
+            Our protection film is engineered for the unique challenges of each material.
             Tailored protection for every surface type.
           </p>
         </div>

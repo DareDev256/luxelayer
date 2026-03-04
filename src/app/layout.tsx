@@ -10,10 +10,10 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "LuxeLayer | Premium Countertop Protection",
   description:
-    "Invisible protection for luxury surfaces. LuxeLayer applies premium PPF (Paint Protection Film) to countertops, keeping your investment pristine for years.",
+    "Invisible protection for luxury surfaces. LuxeLayer applies premium protection film to countertops, keeping your investment pristine for years.",
   keywords: [
     "countertop protection",
-    "PPF countertop",
+    "countertop protection film",
     "luxury surface shield",
     "marble protection",
     "quartz protection",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LuxeLayer | Premium Countertop Protection",
     description:
-      "Invisible protection for luxury surfaces. Premium PPF for countertops.",
+      "Invisible protection for luxury surfaces. Premium protection film for countertops.",
     type: "website",
   },
 };

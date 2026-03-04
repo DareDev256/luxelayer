@@ -26,7 +26,7 @@ export default function Hero() {
           <span className="text-gradient-gold">Luxury Surfaces</span>
         </h1>
         <p className="text-lg md:text-xl text-warm-gray/80 max-w-2xl mx-auto mb-10 animate-fade-in-up-delay-2">
-          Professional-grade Paint Protection Film for countertops, islands, and
+          Professional-grade protection film for countertops, islands, and
           premium surfaces. Your investment stays flawless — no scratches, no
           stains, no worry.
         </p>

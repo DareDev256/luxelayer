@@ -4,7 +4,7 @@ const galleryItems = [
   {
     title: "Exotic Granite Kitchen Island",
     description:
-      "Full PPF protection on exotic gold & black granite island — mirror finish preserved",
+      "Full protection film on exotic gold & black granite island — mirror finish preserved",
     src: "/gallery-1.jpg",
   },
   {

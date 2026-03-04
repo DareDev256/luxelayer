@@ -15,7 +15,7 @@ const steps = [
     number: "03",
     title: "Precision Application",
     description:
-      "Custom-cut PPF applied by hand with zero bubbles, zero seams. Edge-to-edge coverage with invisible protection.",
+      "Custom-cut protection film applied by hand with zero bubbles, zero seams. Edge-to-edge coverage with invisible protection.",
   },
   {
     number: "04",

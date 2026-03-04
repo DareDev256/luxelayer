@@ -10,7 +10,7 @@ export default function Footer() {
               <span className="text-white">Layer</span>
             </a>
             <p className="text-warm-gray/40 mt-3 max-w-sm text-sm leading-relaxed">
-              Premium countertop protection using professional-grade PPF.
+              Premium countertop protection using professional-grade protection film.
               Invisible defense for luxury surfaces — your investment stays
               flawless.
             </p>

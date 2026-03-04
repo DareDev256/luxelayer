@@ -2,7 +2,7 @@ const services = [
   {
     title: "Countertop Protection",
     description:
-      "Full-surface PPF application for kitchen and bathroom countertops. Crystal-clear, self-healing film that's invisible to the eye.",
+      "Full-surface protection film application for kitchen and bathroom countertops. Crystal-clear, self-healing film that's invisible to the eye.",
     features: [
       "Scratch & impact resistance",
       "Stain & etch prevention",
@@ -26,11 +26,11 @@ const services = [
   {
     title: "Premium Surface Care",
     description:
-      "Complete surface assessment, deep cleaning, and PPF application. We prep, protect, and maintain — your countertops stay showroom-fresh.",
+      "Complete surface assessment, deep cleaning, and protection film application. We prep, protect, and maintain — your countertops stay showroom-fresh.",
     features: [
       "Surface condition assessment",
       "Professional deep clean",
-      "Precision PPF installation",
+      "Precision film installation",
       "Annual maintenance plan",
     ],
     tag: "Full Service",
@@ -49,8 +49,9 @@ export default function Services() {
             Protection That&apos;s Invisible, Performance That&apos;s Not
           </h2>
           <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Professional-grade PPF engineered for interior surfaces. See-through
-            protection that lets the natural beauty of your countertops shine.
+            Professional-grade protection film engineered for interior surfaces.
+            See-through protection that lets the natural beauty of your
+            countertops shine.
           </p>
         </div>
 

@@ -4,9 +4,9 @@ import { useState } from "react";
 
 const faqs = [
   {
-    question: "What exactly is PPF for countertops?",
+    question: "What is surface protection film?",
     answer:
-      "PPF (Paint Protection Film) is a clear, thermoplastic urethane film originally developed for aerospace and automotive use. We've adapted it for interior surfaces. It's virtually invisible, self-healing (minor scratches disappear with heat), and provides a physical barrier against scratches, stains, etching, and UV damage.",
+      "It's a clear, thermoplastic urethane film originally developed for aerospace use. We've adapted it specifically for interior surfaces like countertops and islands. It's virtually invisible, self-healing (minor scratches disappear with heat), and provides a physical barrier against scratches, stains, etching, and UV damage.",
   },
   {
     question: "Will the film change how my countertop looks or feels?",
@@ -16,12 +16,12 @@ const faqs = [
   {
     question: "How long does the protection last?",
     answer:
-      "Our premium PPF lasts 7-10 years under normal residential use, backed by our warranty. Commercial installations in high-traffic environments typically last 5-7 years. The film can be removed and replaced without damaging the surface underneath.",
+      "Our premium protection film lasts 7-10 years under normal residential use, backed by our warranty. Commercial installations in high-traffic environments typically last 5-7 years. The film can be removed and replaced without damaging the surface underneath.",
   },
   {
     question: "Is the film food-safe?",
     answer:
-      "Yes. Our PPF is FDA-compliant and food-safe certified. It's non-toxic, BPA-free, and safe for direct food contact. Perfect for kitchen countertops and food prep surfaces.",
+      "Yes. Our protection film is FDA-compliant and food-safe certified. It's non-toxic, BPA-free, and safe for direct food contact. Perfect for kitchen countertops and food prep surfaces.",
   },
   {
     question: "Can I still use my countertop normally?",
