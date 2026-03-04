@@ -1,33 +1,37 @@
+import Image from "next/image";
+
 const galleryItems = [
   {
-    title: "Marble Kitchen Island",
-    description: "Full PPF wrap on Calacatta marble island",
-    placeholder: "Kitchen Island",
+    title: "Exotic Granite Kitchen Island",
+    description:
+      "Full PPF protection on exotic gold & black granite island — mirror finish preserved",
+    src: "/gallery-1.jpg",
+  },
+  {
+    title: "Luxury Kitchen — Full View",
+    description:
+      "Complete countertop and island protection with seamless edge wrapping",
+    src: "/gallery-2.jpg",
   },
   {
     title: "Quartz Bathroom Vanity",
     description: "Edge-to-edge protection on double vanity",
-    placeholder: "Bathroom Vanity",
+    src: null,
   },
   {
     title: "Granite Bar Top",
     description: "Commercial-grade film on entertainment bar",
-    placeholder: "Bar Top",
-  },
-  {
-    title: "Marble Reception Desk",
-    description: "High-traffic commercial surface protection",
-    placeholder: "Reception Desk",
+    src: null,
   },
   {
     title: "Quartzite Dining Surface",
     description: "Full table surface with self-healing film",
-    placeholder: "Dining Surface",
+    src: null,
   },
   {
     title: "Porcelain Kitchen Counter",
     description: "Seamless application on sintered porcelain",
-    placeholder: "Kitchen Counter",
+    src: null,
   },
 ];
 
@@ -54,27 +58,38 @@ export default function Gallery() {
               key={item.title}
               className="group relative overflow-hidden rounded-lg border border-white/5 hover:border-gold/20 transition-colors duration-300"
             >
-              {/* Placeholder for real photos */}
-              <div className="aspect-[4/3] bg-charcoal-light flex items-center justify-center">
-                <div className="text-center p-6">
-                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/10 flex items-center justify-center">
-                    <svg
-                      className="w-8 h-8 text-gold/50"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-warm-gray/30 text-sm">{item.placeholder}</p>
+              {item.src ? (
+                <div className="aspect-[4/3] relative">
+                  <Image
+                    src={item.src}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                 </div>
-              </div>
+              ) : (
+                <div className="aspect-[4/3] bg-charcoal-light flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/10 flex items-center justify-center">
+                      <svg
+                        className="w-8 h-8 text-gold/50"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.5}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-warm-gray/30 text-sm">Coming Soon</p>
+                  </div>
+                </div>
+              )}
               {/* Overlay on hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <div>
@@ -87,10 +102,6 @@ export default function Gallery() {
             </div>
           ))}
         </div>
-
-        <p className="text-center mt-8 text-warm-gray/30 text-sm">
-          Photos of completed projects coming soon
-        </p>
       </div>
     </section>
   );
