@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LuxeLayer
+
+**Invisible armor for luxury surfaces.** LuxeLayer is the marketing site for a premium countertop protection film service — engineered to convert high-intent visitors into booked consultations.
+
+Built with Next.js 16, React 19, and Tailwind CSS 4. Deployed on Vercel.
+
+---
+
+## Why LuxeLayer Exists
+
+Homeowners spend thousands on exotic granite, marble, and quartz countertops — then watch them scratch, stain, and etch within months. LuxeLayer applies self-healing, crystal-clear protection film that keeps surfaces showroom-fresh for years. The site exists to communicate that value proposition fast and book consultations.
+
+## Features
+
+- **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Gallery, Testimonials, FAQ, and CTA sections
+- **Real photography** — Actual project photos of exotic granite countertops, no stock imagery
+- **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
+- **Responsive layout** — Mobile-first design that works from 320px to ultrawide
+- **SEO-optimized** — Open Graph metadata, semantic HTML, keyword-rich content
+- **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle
+
+## Tech Stack
+
+| Layer       | Technology           |
+|-------------|----------------------|
+| Framework   | Next.js 16 (App Router) |
+| UI          | React 19             |
+| Styling     | Tailwind CSS 4       |
+| Language    | TypeScript 5         |
+| Deployment  | Vercel               |
+| Fonts       | Geist (via next/font) |
+
+## Project Structure
+
+```
+src/
+  app/
+    layout.tsx       # Root layout, metadata, font config
+    page.tsx         # Landing page composition
+    globals.css      # Tailwind directives, custom properties
+  components/
+    Header.tsx       # Sticky nav
+    Hero.tsx         # Full-bleed hero with real photography
+    Problem.tsx      # Pain points section
+    Services.tsx     # Three service tiers with feature lists
+    HowItWorks.tsx   # Step-by-step process
+    SurfaceTypes.tsx # Supported materials
+    Gallery.tsx      # Project photo gallery
+    Testimonials.tsx # Customer reviews
+    FAQ.tsx          # Common questions
+    CTA.tsx          # Final conversion block
+    Footer.tsx       # Site footer
+public/
+  gallery-1.jpg      # Hero + gallery photography
+  gallery-2.jpg      # Additional project photo
+```
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Production build
+npm run build
+
+# Start production server
+npm start
+
+# Lint
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design Decisions
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Color palette** — `#0d0d0d` charcoal base with `gold` accents. No gradients on backgrounds — the luxury feel comes from generous whitespace, sharp typography, and real photography doing the heavy lifting.
 
-## Learn More
+**Single-page architecture** — This is a conversion-focused landing page, not a content site. One scroll, one CTA, one goal: book a consultation. No routing complexity needed.
 
-To learn more about Next.js, take a look at the following resources:
+**No CMS** — Content changes infrequently. Hardcoded copy keeps the bundle tiny and eliminates external dependencies. When the business scales, a headless CMS can slot in without restructuring.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private. All rights reserved.
