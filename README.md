@@ -110,6 +110,50 @@ npm run lint
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
 
+### AI-Assisted Development (Optional)
+
+LuxeLayer's codebase works with [Codex MCP Tool](https://github.com/x51xxx/codex-mcp-tool) — an MCP server that connects Claude Code (or Cursor / Claude Desktop) to OpenAI's Codex CLI for cross-model code analysis, sandboxed execution, and structured refactoring.
+
+**One command to add it:**
+
+```bash
+claude mcp add codex-cli -- npx -y @trishchuk/codex-mcp-tool
+```
+
+**Prerequisites:** Node.js 18+, [Codex CLI](https://github.com/openai/codex) installed and authenticated (`codex auth`).
+
+Once registered, Claude Code gains access to these MCP tools:
+
+| Tool | What it does |
+|------|-------------|
+| `ask-codex` | Analyze files via `@` references (e.g. `@src/components/`), select models, run sandboxed edits |
+| `brainstorm` | Generate ideas using SCAMPER / design-thinking frameworks |
+| `list-sessions` | Manage multi-turn conversation sessions with workspace isolation |
+| `health` | Diagnose Codex CLI installation, version, and feature support |
+
+**Example prompts after setup:**
+
+```
+explain the architecture of @src/components/SurfaceFinder.tsx
+analyze @package.json and suggest dependency updates
+use codex sandbox:true to refactor @src/hooks/useActiveSection.ts
+```
+
+For Claude Desktop or Cursor, add to your MCP config (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "codex-cli": {
+      "command": "npx",
+      "args": ["-y", "@trishchuk/codex-mcp-tool"]
+    }
+  }
+}
+```
+
+See the [codex-mcp-tool README](https://github.com/x51xxx/codex-mcp-tool) for model selection, session management, and local OSS model support.
+
 ## Architecture
 
 ### Component Composition

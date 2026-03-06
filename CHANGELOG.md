@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.9.1] - 2026-03-06
+
+### Added
+- **AI-Assisted Development docs** — README section documenting one-command Codex MCP Tool integration (`claude mcp add codex-cli -- npx -y @trishchuk/codex-mcp-tool`). Covers prerequisites, exposed MCP tools (`ask-codex`, `brainstorm`, `list-sessions`, `health`), example prompts referencing LuxeLayer source files, and Claude Desktop / Cursor JSON config. Links to upstream docs for model selection and session management
+
 ## [0.9.0] - 2026-03-06
 
 ### Added
