@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.13.1] - 2026-03-06
+
+### Fixed
+- **Rotation not resetting on mode switch** — Switching between Auto and Diverse rotation modes left `elapsed` at its previous value, causing the new schedule to start at an arbitrary entry instead of the beginning. Added `reset()` method to `useRotationCycle` that zeroes elapsed, clears pending resume timers, and resumes playback. SurfaceFinder now calls `reset()` on mode toggle
+- **Deselect freezes auto-rotation for 6 seconds** — Clicking an active surface pill to deselect it called `rotation.pause()` unconditionally, leaving auto-rotation frozen until the 6-second auto-resume timer fired. Now only pauses on selection; deselection calls `rotation.resume()` immediately so auto-cycling picks up without delay
+
 ## [0.13.0] - 2026-03-06
 
 ### Changed

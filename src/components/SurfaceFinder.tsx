@@ -46,9 +46,14 @@ export default function SurfaceFinder() {
   const activeIndex = selected ?? (autoProfile ? profiles.indexOf(autoProfile) : null);
 
   const handleSelect = useCallback((i: number) => {
-    rotation.pause();
     setSelected((prev) => {
-      if (prev === i) return null;
+      if (prev === i) {
+        // Deselecting — resume auto-rotation immediately
+        rotation.resume();
+        return null;
+      }
+      // Selecting — pause auto-rotation
+      rotation.pause();
       setLastSelected(i);
       return i;
     });
@@ -69,7 +74,7 @@ export default function SurfaceFinder() {
             key={m}
             role="radio"
             aria-checked={mode === m}
-            onClick={() => { setMode(m); setSelected(null); }}
+            onClick={() => { setMode(m); setSelected(null); rotation.reset(); }}
             className={`
               px-4 py-1.5 text-xs font-semibold uppercase tracking-widest transition-all duration-200
               first:rounded-l last:rounded-r border

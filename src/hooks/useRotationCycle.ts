@@ -18,6 +18,8 @@ interface RotationState<T> {
   pause: () => void;
   /** Resume after pause */
   resume: () => void;
+  /** Reset elapsed to 0 and resume — call on schedule identity change */
+  reset: () => void;
 }
 
 /**
@@ -62,11 +64,19 @@ export function useRotationCycle<T>(
     setPlaying(true);
   }, [clearResumeTimer]);
 
+  /** Reset elapsed to 0 — call when the schedule identity changes. */
+  const reset = useCallback(() => {
+    setElapsed(0);
+    clearResumeTimer();
+    setPlaying(true);
+  }, [clearResumeTimer]);
+
   return {
     active: activeEntryAt(schedule, elapsed),
     progress: calcProgress(schedule, elapsed),
     playing,
     pause,
     resume,
+    reset,
   };
 }
