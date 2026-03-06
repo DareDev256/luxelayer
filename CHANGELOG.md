@@ -2,6 +2,17 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.9.0] - 2026-03-06
+
+### Added
+- **Auto-rotation for Surface Finder** — surfaces cycle automatically on a timer with diversity-ordered scheduling. High-risk surfaces (Marble, Granite, Solid Surface) get 2x dwell time (8s vs 4s) since they're the highest-converting profiles. A gold progress bar fills beneath the active pill during auto-play
+- **Pure auto-select engine** (`src/utils/autoSelect.ts`) — `diversityPick` reorders by severity for visual variety, `computeRotationSchedule` assigns cumulative offsets with critical-entry weighting, `activeEntryAt` and `cycleProgress` use double-modulo wrapping for negative/overflow safety
+- **`useRotationCycle` hook** — bridges the pure schedule functions to a `setInterval`-driven React state machine with pause-on-interaction (auto-resumes after 6s)
+- **17 auto-select unit tests** — covers empty schedules, diversity ordering, cumulative offsets, midpoint progress, boundary wrapping, negative elapsed, and cycle indexing
+
+### Changed
+- SurfaceFinder now shows a surface profile immediately on mount (auto-rotation) instead of requiring manual selection — increases engagement by showing value before interaction
+
 ## [0.8.3] - 2026-03-06
 
 ### Security

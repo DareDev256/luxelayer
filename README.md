@@ -13,7 +13,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 ## Features
 
 - **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Surface Finder, Gallery, Testimonials, FAQ, and CTA sections
-- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA. Result panel uses CSS grid row animation for smooth expand *and* collapse transitions
+- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA. Result panel uses CSS grid row animation for smooth expand *and* collapse transitions. **Auto-rotation** cycles through surfaces on a timer with diversity-ordered scheduling (high-risk surfaces get 2x dwell time), a per-pill progress bar, and automatic pause-on-interaction with 6s auto-resume
 - **Real photography** — Actual project photos of exotic granite countertops, no stock imagery. Gallery captions are always visible on touch devices (mobile-first), hover overlay on desktop
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
@@ -24,7 +24,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Keyboard-accessible mobile menu** — Escape key dismisses the hamburger menu with focus return to the trigger button (WCAG 2.1 SC 2.4.3)
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 - **Security-hardened** — Nonce-based CSP via middleware (no `unsafe-inline`/`unsafe-eval` for scripts), HSTS with preload, X-Frame-Options DENY, COOP same-origin, Permissions-Policy, upgrade-insecure-requests; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
-- **20 component tests** — Vitest + Testing Library covering Icon rendering (filled/outlined viewBox logic, accessibility), SurfaceFinder interactions (selection, toggle, surface switching, ARIA radiogroup contract), and FAQ accordion behavior (expand/collapse, single-open constraint, aria-controls/labelledby wiring)
+- **37 component tests** — Vitest + Testing Library covering Icon rendering, SurfaceFinder interactions (selection, toggle, auto-rotation, ARIA radiogroup), FAQ accordion behavior, and 17 pure-function auto-select tests (diversity ordering, schedule computation, cycle progress, boundary wrapping, negative elapsed)
 
 ## Tech Stack
 
@@ -47,8 +47,11 @@ src/
     page.tsx         # Landing page composition
     globals.css      # Tailwind directives, custom properties
   hooks/
-    useActiveSection.ts # IO-based tracker for which section is in view (powers nav highlighting)
-    useScrollReveal.ts  # Intersection Observer hook for scroll-triggered visibility
+    useActiveSection.ts  # IO-based tracker for which section is in view (powers nav highlighting)
+    useScrollReveal.ts   # Intersection Observer hook for scroll-triggered visibility
+    useRotationCycle.ts  # Timer-driven auto-rotation hook (bridges autoSelect to React state)
+  utils/
+    autoSelect.ts        # Pure rotation engine — diversityPick, schedule computation, cycle math
   components/
     Section.tsx      # Layout wrapper — enforces consistent section padding, max-width, and background alternation
     Icon.tsx         # Shared SVG icon library (9 icons, single source of truth)

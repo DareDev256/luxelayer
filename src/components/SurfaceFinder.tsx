@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Icon from "./Icon";
 import Section from "./Section";
 import SectionHeader from "./SectionHeader";
+import {
+  diversityPick,
+  computeRotationSchedule,
+} from "@/utils/autoSelect";
+import { useRotationCycle } from "@/hooks/useRotationCycle";
 
 interface SurfaceProfile {
   name: string;
@@ -65,15 +70,37 @@ const profiles: SurfaceProfile[] = [
   },
 ];
 
+const BASE_DWELL = 4000; // 4s per surface, critical gets 8s
+
 export default function SurfaceFinder() {
   const [selected, setSelected] = useState<number | null>(null);
   // Track the last-selected index so the panel content stays visible
   // during the collapse animation instead of unmounting instantly.
   const [lastSelected, setLastSelected] = useState(0);
-  const profile = selected !== null ? profiles[selected] : null;
+
+  // Auto-rotation schedule — diversity-ordered, critical surfaces get 2× dwell
+  const schedule = useMemo(() => {
+    const order = diversityPick(profiles, (p) => p.riskLevel);
+    return computeRotationSchedule(
+      profiles,
+      order,
+      BASE_DWELL,
+      (p) => p.riskLevel === "High",
+    );
+  }, []);
+
+  const rotation = useRotationCycle(schedule);
+  const autoProfile = rotation.active?.item ?? null;
+
+  // Manual selection overrides auto-rotation
+  const profile = selected !== null ? profiles[selected] : autoProfile;
   const display = profile ?? profiles[lastSelected];
 
+  // Derive the display index for pill highlighting
+  const activeIndex = selected ?? (autoProfile ? profiles.indexOf(autoProfile) : null);
+
   const handleSelect = (i: number) => {
+    rotation.pause(); // pause auto-rotation on user interaction
     if (selected === i) {
       setSelected(null);
     } else {
@@ -92,34 +119,46 @@ export default function SurfaceFinder() {
 
       {/* Surface selector pills */}
       <div className="flex flex-wrap justify-center gap-3 mb-12" role="radiogroup" aria-label="Select your countertop surface type">
-        {profiles.map((p, i) => (
-          <button
-            key={p.name}
-            role="radio"
-            aria-checked={selected === i}
-            onClick={() => handleSelect(i)}
-            className={`
-              px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-300
-              ${selected === i
-                ? "border-gold bg-gold/10 text-gold shadow-[0_0_12px_rgba(201,168,76,0.2)]"
-                : "border-white/10 text-warm-gray/50 hover:border-white/25 hover:text-warm-gray/80"
-              }
-            `}
-          >
-            {p.name}
-          </button>
-        ))}
+        {profiles.map((p, i) => {
+          const isActive = activeIndex === i;
+          const isAutoActive = selected === null && isActive;
+          return (
+            <button
+              key={p.name}
+              role="radio"
+              aria-checked={isActive}
+              onClick={() => handleSelect(i)}
+              className={`
+                relative px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-300 overflow-hidden
+                ${isActive
+                  ? "border-gold bg-gold/10 text-gold shadow-[0_0_12px_rgba(201,168,76,0.2)]"
+                  : "border-white/10 text-warm-gray/50 hover:border-white/25 hover:text-warm-gray/80"
+                }
+              `}
+            >
+              {/* Auto-rotation progress bar — only visible during auto-play */}
+              {isAutoActive && (
+                <span
+                  className="absolute bottom-0 left-0 h-0.5 bg-gold/40 transition-[width] duration-100 ease-linear"
+                  style={{ width: `${rotation.progress * 100}%` }}
+                  aria-hidden="true"
+                />
+              )}
+              {p.name}
+            </button>
+          );
+        })}
       </div>
 
       {/* Result panel — always mounted so CSS transitions play on both expand and collapse */}
       <div
         className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
         style={{
-          gridTemplateRows: profile ? "1fr" : "0fr",
-          opacity: profile ? 1 : 0,
+          gridTemplateRows: profile || autoProfile ? "1fr" : "0fr",
+          opacity: profile || autoProfile ? 1 : 0,
         }}
         aria-live="polite"
-        aria-hidden={!profile}
+        aria-hidden={!profile && !autoProfile}
       >
         <div className="overflow-hidden">
           <div className="border border-gold/15 rounded-lg p-8 bg-[#151515]">
@@ -157,7 +196,7 @@ export default function SurfaceFinder() {
                 <a
                   href="#contact"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-charcoal bg-gold px-5 py-2.5 rounded hover:bg-gold-light transition-colors duration-200"
-                  tabIndex={profile ? 0 : -1}
+                  tabIndex={profile || autoProfile ? 0 : -1}
                 >
                   Get a Quote
                   <Icon name="bolt" className="w-3.5 h-3.5" />
@@ -168,11 +207,11 @@ export default function SurfaceFinder() {
         </div>
       </div>
 
-      {/* Empty state prompt — fades out when a profile is selected */}
+      {/* Empty state prompt — fades out when a profile is selected or auto-rotation is active */}
       <p
         className="text-center text-warm-gray/25 text-sm transition-opacity duration-300"
-        style={{ opacity: profile ? 0 : 1, height: profile ? 0 : "auto", overflow: "hidden" }}
-        aria-hidden={!!profile}
+        style={{ opacity: profile || autoProfile ? 0 : 1, height: profile || autoProfile ? 0 : "auto", overflow: "hidden" }}
+        aria-hidden={!!(profile || autoProfile)}
       >
         Tap a surface above to see your personalized protection plan
       </p>

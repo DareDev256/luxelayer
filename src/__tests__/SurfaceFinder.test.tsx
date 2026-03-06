@@ -19,13 +19,14 @@ describe("SurfaceFinder", () => {
     ]);
   });
 
-  it("starts with no selection and shows empty-state prompt", () => {
+  it("starts with auto-rotation active — one surface is highlighted", () => {
     const { view } = renderFinder();
     const radios = view.getAllByRole("radio");
-    for (const radio of radios) {
-      expect(radio).toHaveAttribute("aria-checked", "false");
-    }
-    expect(view.getByText(/Tap a surface above/)).toBeInTheDocument();
+    const checkedRadios = radios.filter(
+      (r) => r.getAttribute("aria-checked") === "true",
+    );
+    // Auto-rotation should highlight exactly one surface
+    expect(checkedRadios).toHaveLength(1);
   });
 
   it("selects a surface and shows its profile", async () => {
