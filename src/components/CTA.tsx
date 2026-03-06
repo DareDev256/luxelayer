@@ -1,6 +1,37 @@
+"use client";
+
+import { useState, useRef, useCallback, useEffect } from "react";
 import Section from "./Section";
 
+/**
+ * Minimum time (ms) a human needs to fill the form. Bots submit instantly;
+ * real users need at least a few seconds to type name + email + select.
+ * 3 seconds is generous — most humans take 15-30s.
+ */
+const MIN_SUBMIT_MS = 3000;
+
 export default function CTA() {
+  const [submitted, setSubmitted] = useState(false);
+  const loadedAt = useRef(0);
+
+  // Capture mount timestamp in an effect (pure render — no Date.now in body)
+  useEffect(() => { loadedAt.current = Date.now(); }, []);
+
+  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // Honeypot — hidden field that humans never fill, bots auto-complete
+    if (data.get("website")) return;
+
+    // Timing gate — reject instant submissions (bot behavior)
+    if (Date.now() - loadedAt.current < MIN_SUBMIT_MS) return;
+
+    // TODO: Wire to API route / email service. For now, show confirmation.
+    setSubmitted(true);
+  }, []);
+
   return (
     <Section id="contact" maxWidth="4xl" className="text-center">
       <div className="bg-gradient-to-b from-charcoal-light to-charcoal border border-gold/20 rounded-2xl p-12 md:p-16 border-glow">
@@ -15,7 +46,23 @@ export default function CTA() {
           you how LuxeLayer keeps your countertops flawless for years to come.
         </p>
 
-        <form className="max-w-md mx-auto space-y-4" action="#contact" method="POST">
+        {submitted ? (
+          <div className="max-w-md mx-auto py-12" role="status">
+            <p className="text-gold text-xl font-semibold mb-2">Thank you!</p>
+            <p className="text-warm-gray/50">We&apos;ll be in touch within 24 hours.</p>
+          </div>
+        ) : (
+        <form
+          className="max-w-md mx-auto space-y-4"
+          onSubmit={handleSubmit}
+          noValidate={false}
+        >
+          {/* Honeypot — invisible to humans, irresistible to bots */}
+          <div aria-hidden="true" className="absolute -left-[9999px]">
+            <label htmlFor="website">Do not fill this</label>
+            <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+          </div>
+
           <input
             type="text"
             name="name"
@@ -74,6 +121,7 @@ export default function CTA() {
             Request Free Quote
           </button>
         </form>
+        )}
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-warm-gray/40 text-sm">
           <span>Free in-home assessment</span>

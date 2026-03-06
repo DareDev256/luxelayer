@@ -26,7 +26,10 @@ export function middleware(request: NextRequest) {
     "img-src 'self' data:",
     "font-src 'self' https://fonts.gstatic.com",
     "connect-src 'self'",
-    "object-src 'none'", // Block Flash/Java plugins (OWASP)
+    "object-src 'none'",       // Block Flash/Java plugins (OWASP)
+    "child-src 'none'",        // Block nested browsing contexts (iframes/workers)
+    "frame-src 'none'",        // Explicit iframe blocking (fallback-independent)
+    "manifest-src 'self'",     // Only allow same-origin web manifests
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'",
@@ -43,6 +46,8 @@ export function middleware(request: NextRequest) {
   });
 
   response.headers.set("Content-Security-Policy", csp);
+  // Prevent cross-origin reads of site resources (Spectre mitigation)
+  response.headers.set("Cross-Origin-Resource-Policy", "same-origin");
   return response;
 }
 

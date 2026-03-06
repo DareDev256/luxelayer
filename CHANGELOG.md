@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.10.2] - 2026-03-06
+
+### Security
+- **Contact form bot protection** — Added honeypot field (hidden input that bots auto-fill, humans never see) and timing gate (submissions under 3 seconds are silently rejected). Form now uses `onSubmit` handler instead of raw `action="#contact" method="POST"` which previously caused a full-page POST reload with no protection
+- **CSP hardened** — Added `frame-src 'none'`, `child-src 'none'`, and `manifest-src 'self'` directives to middleware CSP. Closes the gap where `frame-ancestors` prevented embedding *this* site but nothing blocked *this* site from loading malicious iframes
+- **Cross-Origin-Resource-Policy header** — Added `same-origin` CORP header to both middleware (dynamic routes) and next.config.ts (static assets). Mitigates Spectre-class side-channel attacks by preventing cross-origin reads of site resources
+- **security.txt** — Added `/.well-known/security.txt` per RFC 9116 with contact, canonical URL, preferred language, and expiry date for responsible vulnerability disclosure
+
 ## [0.10.1] - 2026-03-06
 
 ### Fixed
