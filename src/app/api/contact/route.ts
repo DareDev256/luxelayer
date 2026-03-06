@@ -14,16 +14,20 @@ const MAX_REQUESTS = 5; // per window per IP
 
 const hits = new Map<string, number[]>();
 
+/** Hard ceiling — if a DDoS floods with unique IPs, nuke the map rather than OOM */
+const MAX_MAP_SIZE = 10_000;
+
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const timestamps = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   timestamps.push(now);
   hits.set(ip, timestamps);
-  // Prevent memory leak — evict stale IPs every 1000 entries
+  // Evict stale IPs when map is large; hard-clear if eviction isn't enough
   if (hits.size > 1000) {
     for (const [key, ts] of hits) {
       if (ts.every((t) => now - t >= WINDOW_MS)) hits.delete(key);
     }
+    if (hits.size > MAX_MAP_SIZE) hits.clear();
   }
   return timestamps.length > MAX_REQUESTS;
 }

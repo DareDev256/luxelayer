@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.15.2] - 2026-03-06
+
+### Security
+- **HTML injection in email body (stored XSS)** — `buildEmailHtml()` interpolated user-supplied `message`, `name`, and `email` directly into HTML template literals without escaping. An attacker could submit `<img src=x onerror="...">` as a message, rendering executable markup in the recipient's email client. Added `escapeHtml()` utility that encodes all five dangerous characters (`& < > " '`) before interpolation, plus `encodeURIComponent()` on the `mailto:` href
+- **Cross-origin isolation headers** — Added `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Resource-Policy: same-origin` to all responses, preventing cross-origin window reference retention (Spectre-class side-channel mitigation) and unauthorized cross-origin resource embedding
+- **Rate limiter memory exhaustion** — The in-memory IP map had no hard ceiling; a distributed attack from >1000 unique IPs could grow it unboundedly. Added `MAX_MAP_SIZE` (10,000) hard cap that clears the map entirely under extreme pressure, trading brief rate-limit amnesty for guaranteed memory safety
+- **5 new security tests** — `escapeHtml` entity encoding for all dangerous characters, img/onerror payload neutralization, attribute breakout via single quotes, clean string passthrough, and empty string edge case. Total suite: 109 tests passing
+
 ## [0.15.1] - 2026-03-06
 
 ### Fixed

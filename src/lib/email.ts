@@ -15,6 +15,22 @@ import type { ContactFormData } from "./validation";
 
 const RESEND_URL = "https://api.resend.com/emails";
 
+/**
+ * Escape HTML entities to prevent injection in email body.
+ *
+ * Even though validation strips control chars, the message field is freeform
+ * text — without escaping, `<script>` or `<img onerror>` payloads would
+ * render in the recipient's email client (stored XSS via email).
+ */
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 interface SendResult {
   success: boolean;
   /** Resend message ID on success, error message on failure */
@@ -27,11 +43,11 @@ interface SendResult {
  */
 function buildEmailHtml(data: ContactFormData): string {
   const rows = [
-    ["Name", data.name],
-    ["Email", data.email],
-    ["Phone", data.phone || "—"],
-    ["Surface", data.surface],
-    ["Message", data.message || "—"],
+    ["Name", escapeHtml(data.name)],
+    ["Email", escapeHtml(data.email)],
+    ["Phone", escapeHtml(data.phone) || "—"],
+    ["Surface", escapeHtml(data.surface)],
+    ["Message", escapeHtml(data.message) || "—"],
   ];
 
   const tableRows = rows
@@ -49,7 +65,7 @@ function buildEmailHtml(data: ContactFormData): string {
       </div>
       <table style="width:100%;border-collapse:collapse;margin:16px 0">${tableRows}</table>
       <div style="padding:12px 24px;color:#6b7280;font-size:12px;border-top:1px solid #2a2a2a">
-        Reply directly to <a href="mailto:${data.email}" style="color:#b8860b">${data.email}</a>
+        Reply directly to <a href="mailto:${encodeURIComponent(data.email)}" style="color:#b8860b">${escapeHtml(data.email)}</a>
       </div>
     </div>`;
 }
