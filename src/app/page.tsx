@@ -9,12 +9,14 @@ import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import SurfaceFinder from "@/components/SurfaceFinder";
 import ScrollReveal from "@/components/ScrollReveal";
 
 /**
  * Landing page composition — sections are ordered by conversion funnel:
  * Attention (Hero) → Problem → Solution (Services) → Process (HowItWorks)
- * → Proof (Gallery, Testimonials) → Objection handling (FAQ) → Action (CTA).
+ * → Qualification (SurfaceTypes → SurfaceFinder) → Proof (Gallery, Testimonials)
+ * → Objection handling (FAQ) → Action (CTA).
  *
  * Each below-the-fold section is wrapped in ScrollReveal with varied
  * directions to create visual rhythm without feeling repetitive.
@@ -36,6 +38,9 @@ export default function Home() {
         </ScrollReveal>
         <ScrollReveal direction="left" delay={80}>
           <SurfaceTypes />
+        </ScrollReveal>
+        <ScrollReveal direction="fade" delay={100}>
+          <SurfaceFinder />
         </ScrollReveal>
         <ScrollReveal>
           <Gallery />

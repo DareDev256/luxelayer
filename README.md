@@ -12,7 +12,8 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 
 ## Features
 
-- **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Gallery, Testimonials, FAQ, and CTA sections
+- **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Surface Finder, Gallery, Testimonials, FAQ, and CTA sections
+- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA
 - **Real photography** — Actual project photos of exotic granite countertops, no stock imagery
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
@@ -54,8 +55,9 @@ src/
     Problem.tsx      # Pain points section
     Services.tsx     # Three service tiers with feature lists
     HowItWorks.tsx   # Step-by-step process
-    SurfaceTypes.tsx # Supported materials
-    Gallery.tsx      # Project photo gallery
+    SurfaceTypes.tsx  # Supported materials
+    SurfaceFinder.tsx # Interactive surface quiz (client component)
+    Gallery.tsx       # Project photo gallery
     Testimonials.tsx # Customer reviews
     FAQ.tsx          # Common questions
     CTA.tsx          # Final conversion block
@@ -116,6 +118,7 @@ main
   ├─ ScrollReveal > Services     (direction="right")
   ├─ ScrollReveal > HowItWorks
   ├─ ScrollReveal > SurfaceTypes (direction="left")
+  ├─ ScrollReveal > SurfaceFinder (direction="fade", client component)
   ├─ ScrollReveal > Gallery
   ├─ ScrollReveal > Testimonials (direction="fade")
   ├─ ScrollReveal > FAQ

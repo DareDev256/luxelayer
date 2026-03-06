@@ -2,6 +2,15 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.7.0] - 2026-03-06
+
+### Added
+- `SurfaceFinder` interactive quiz component — users select their countertop material (Marble, Quartz, Granite, Quartzite, Porcelain, Solid Surface) and get a personalized risk assessment with specific threats, protection recommendation, and inline "Get a Quote" CTA
+- Smooth expand/collapse panel animation using `max-height` + `opacity` transition (500ms ease-out) for result reveal
+- ARIA `radiogroup` pattern on surface selector pills with `aria-checked` state, `aria-live="polite"` on result panel for screen reader announcements
+- Gold glow `box-shadow` on active surface pill for clear selection feedback
+- SurfaceFinder inserted into conversion funnel between SurfaceTypes (what we protect) and Gallery (proof) — creates a qualification step where users self-identify their need
+
 ## [0.6.0] - 2026-03-06
 
 ### Changed
