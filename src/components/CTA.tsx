@@ -14,6 +14,8 @@ const MIN_SUBMIT_MS = 3000;
 
 export default function CTA() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<ValidationError[]>([]);
   const loadedAt = useRef(0);
 
@@ -26,9 +28,10 @@ export default function CTA() {
     [fieldErrors],
   );
 
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFieldErrors([]);
+    setServerError("");
     const form = e.currentTarget;
     const data = new FormData(form);
 
@@ -38,7 +41,7 @@ export default function CTA() {
     // Timing gate — reject instant submissions (bot behavior)
     if (Date.now() - loadedAt.current < MIN_SUBMIT_MS) return;
 
-    // ── Programmatic validation (mirrors future server-side checks) ──
+    // ── Client-side validation (fast feedback) ──
     const result = validateContactForm({
       name: data.get("name"),
       email: data.get("email"),
@@ -52,8 +55,25 @@ export default function CTA() {
       return;
     }
 
-    // TODO: Wire to API route / email service. Send result.data (sanitised).
-    setSubmitted(true);
+    // ── Submit to server-validated API route ──
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(result.data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setServerError(body.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setServerError("Network error. Please check your connection.");
+    } finally {
+      setSubmitting(false);
+    }
   }, []);
 
   return (
@@ -87,6 +107,11 @@ export default function CTA() {
             <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
           </div>
 
+          {serverError && (
+            <div role="alert" className="text-red-400 text-sm text-left">
+              <p>{serverError}</p>
+            </div>
+          )}
           {fieldErrors.length > 0 && (
             <div role="alert" className="text-red-400 text-sm text-left space-y-1">
               {fieldErrors.map((err) => (
@@ -152,8 +177,8 @@ export default function CTA() {
             maxLength={1000}
             className="input-field resize-none"
           />
-          <Button type="submit" size="lg" fullWidth>
-            Request Free Quote
+          <Button type="submit" size="lg" fullWidth disabled={submitting}>
+            {submitting ? "Sending\u2026" : "Request Free Quote"}
           </Button>
         </form>
         )}

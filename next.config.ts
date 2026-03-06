@@ -3,19 +3,21 @@ import type { NextConfig } from "next";
 /**
  * Static security headers — applied to every response via Next.js config.
  *
- * CSP is NOT here — it's generated per-request in middleware.ts with a
- * unique nonce so we can use nonce-based script-src instead of unsafe-inline.
+ * script-src still uses 'unsafe-inline' because Next.js hydration injects
+ * inline scripts. 'unsafe-eval' has been removed — eval()/Function()/
+ * setTimeout('string') are blocked. Nonce-based CSP is the ideal next step
+ * but requires middleware that doesn't break React 19 hydration.
  *
  * X-XSS-Protection is set to 0 (disabled) because the legacy 1;mode=block
  * behavior can introduce vulnerabilities in older browsers (selective script
- * execution attacks). CSP nonce handles XSS prevention now.
+ * execution attacks). CSP provides XSS prevention now.
  */
 const securityHeaders = [
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "script-src 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data:",
       "font-src 'self' https://fonts.gstatic.com",
@@ -24,6 +26,7 @@ const securityHeaders = [
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
+      "upgrade-insecure-requests",
     ].join("; "),
   },
   { key: "X-Content-Type-Options", value: "nosniff" },

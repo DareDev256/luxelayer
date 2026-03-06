@@ -57,12 +57,14 @@ export default function Button({
   children,
   ...rest
 }: Props) {
+  const disabled = "disabled" in rest && (rest as { disabled?: boolean }).disabled;
   const base = "rounded inline-flex items-center justify-center gap-2";
   const classes = [
     base,
     variants[variant],
     sizes[size],
     fullWidth && "w-full",
+    disabled && "opacity-50 cursor-not-allowed",
     className,
   ]
     .filter(Boolean)

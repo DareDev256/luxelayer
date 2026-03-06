@@ -2,6 +2,19 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.15.0] - 2026-03-06
+
+### Security
+- **Server-validated API route** — Created `POST /api/contact` with isomorphic `validateContactForm()` running on the server, closing the client-only validation bypass. The CTA form now POSTs sanitised data to the API route instead of silently succeeding client-side
+- **IP rate limiting** — Sliding-window rate limiter (5 requests/minute per IP) with stale-entry eviction prevents form abuse and brute-force submissions. Works behind Vercel/Cloudflare proxies via `x-forwarded-for`/`x-real-ip` header extraction
+- **CSP hardened** — Removed `'unsafe-eval'` from `script-src`, blocking `eval()`, `Function()`, and `setTimeout('string')` XSS escalation vectors. Added `upgrade-insecure-requests` directive
+- **Unicode homoglyph protection** — Email validation now rejects non-ASCII characters, preventing Cyrillic/Greek lookalike domain phishing (e.g., `exаmple.com` with Cyrillic 'а')
+- **8 server-side security tests** — Prototype pollution, CRLF header injection, log injection via newlines, unicode homoglyph domains, payload overflow truncation, null byte injection, constructor pollution, and allowlist exhaustiveness verification. Total suite: 104 tests passing
+
+### Changed
+- CTA form now shows loading state during submission and displays server error messages (rate limit, network errors)
+- Button component supports disabled state with opacity/cursor styling
+
 ## [0.14.4] - 2026-03-06
 
 ### Fixed

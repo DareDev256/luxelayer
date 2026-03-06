@@ -42,8 +42,12 @@ const NAME_RE = /^[A-Za-z\s\-'.]{1,100}$/;
 /**
  * Practical email regex — not RFC 5322 complete (that's 6k chars) but catches
  * 99.9% of valid addresses and rejects obvious injection attempts.
+ * ASCII-only to block unicode homoglyph phishing (Cyrillic 'а' ≠ Latin 'a').
  */
 const EMAIL_RE = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/;
+
+/** Rejects any non-ASCII characters — catches homoglyph/IDN phishing */
+const ASCII_ONLY_RE = /^[\x20-\x7E]*$/;
 
 /** Digits, spaces, dashes, plus, parens — international phone formats */
 const PHONE_RE = /^[\d\s\-+()]{7,20}$/;
@@ -114,6 +118,8 @@ export function validateContactForm(
   // ── Email ──
   if (!email) {
     errors.push({ field: "email", message: "Email is required" });
+  } else if (!ASCII_ONLY_RE.test(email)) {
+    errors.push({ field: "email", message: "Email must contain only ASCII characters" });
   } else if (!EMAIL_RE.test(email)) {
     errors.push({ field: "email", message: "Enter a valid email address" });
   }
