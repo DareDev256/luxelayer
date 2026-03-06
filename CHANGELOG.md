@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.11.0] - 2026-03-06
+
+### Added
+- **Rotation indicator widget** — compact inline component showing an SVG progress ring, active surface label, risk-colored queue dots (active dot pulses at 1.8x scale), and pause/play toggle. Renders only during auto-rotation; disappears on manual selection. Click anywhere on the indicator to pause/resume the rotation cycle
+- **RotationIndicator component** — new `src/components/RotationIndicator.tsx` with accessible button semantics (`aria-label` for pause/resume state), gold-stroke progress arc via `stroke-dasharray`/`stroke-dashoffset`, and risk-level dot mapping (red/amber/yellow)
+
 ## [0.10.2] - 2026-03-06
 
 ### Security

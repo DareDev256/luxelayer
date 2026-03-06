@@ -10,6 +10,7 @@ import {
   computeRotationSchedule,
 } from "@/utils/autoSelect";
 import { useRotationCycle } from "@/hooks/useRotationCycle";
+import RotationIndicator from "./RotationIndicator";
 
 type MaterialType = "natural" | "engineered";
 
@@ -189,6 +190,17 @@ export default function SurfaceFinder() {
           );
         })}
       </div>
+
+      {/* Rotation state indicator — visible only during auto-play */}
+      {selected === null && (
+        <RotationIndicator
+          schedule={schedule}
+          active={rotation.active}
+          progress={rotation.progress}
+          playing={rotation.playing}
+          onToggle={rotation.playing ? rotation.pause : rotation.resume}
+        />
+      )}
 
       {/* Result panel — always mounted so CSS transitions play on both expand and collapse */}
       <div
