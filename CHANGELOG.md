@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.15.3] - 2026-03-06
+
+### Added
+- **Project-level `CLAUDE.md`** — Machine-readable codebase specification for AI-assisted development tools. Documents commands (`dev`, `build`, `test`, `lint`), architecture boundaries (single-page, no routing, no global state), component patterns (server-first, `Icon` as SVG single source of truth, `Section` wrapper convention), code conventions (strict TS, Tailwind v4 `@theme inline` tokens, pure state updaters), security invariants (isomorphic validation, CSP, rate limiting), testing structure (6 test files, 109 tests, Testing Library query conventions), and explicit anti-patterns. Eliminates cold-start context loss for any developer or AI tool working on the codebase
+- **README AI-assisted development section expanded** — Documents `CLAUDE.md` purpose and links to it as the primary onboarding resource for AI-assisted workflows
+
 ## [0.15.2] - 2026-03-06
 
 ### Security

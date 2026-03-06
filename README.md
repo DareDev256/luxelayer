@@ -131,7 +131,9 @@ CONTACT_FROM="LuxeLayer <hello@luxelayer.com>"
 
 ### AI-Assisted Development (Optional)
 
-LuxeLayer's codebase works with [Codex MCP Tool](https://github.com/x51xxx/codex-mcp-tool) — an MCP server that connects Claude Code (or Cursor / Claude Desktop) to OpenAI's Codex CLI for cross-model code analysis, sandboxed execution, and structured refactoring.
+LuxeLayer ships a project-level [`CLAUDE.md`](./CLAUDE.md) — a machine-readable specification of commands, architecture boundaries, code conventions, and anti-patterns. Any AI coding tool that reads this file (Claude Code, Cursor, Copilot Workspace) gets zero-cold-start context: it knows to run `npm run test && npm run lint` before committing, that state updaters must be pure, that `Icon.tsx` is the single SVG source of truth, and that this is intentionally a single-page site with no routing. If you use AI-assisted development, read `CLAUDE.md` first — it documents the decisions that aren't obvious from the code alone.
+
+The codebase also works with [Codex MCP Tool](https://github.com/x51xxx/codex-mcp-tool) — an MCP server that connects Claude Code (or Cursor / Claude Desktop) to OpenAI's Codex CLI for cross-model code analysis, sandboxed execution, and structured refactoring.
 
 **One command to add it:**
 
