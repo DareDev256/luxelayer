@@ -314,6 +314,153 @@ describe("cycleIndex", () => {
   });
 });
 
+describe("diverseScorePick — edge cases", () => {
+  it("single item returns [0]", () => {
+    const items = [{ name: "A", risk: "High" }];
+    expect(diverseScorePick(items, [(i) => i.risk])).toEqual([0]);
+  });
+
+  it("all-same degeneration — every item identical across all dimensions", () => {
+    const items = Array.from({ length: 5 }, (_, i) => ({ id: i, cat: "X" }));
+    const order = diverseScorePick(items, [(i) => i.cat]);
+    // All scores are 0 after the first pick — tie-break by original index
+    expect(order).toEqual([0, 1, 2, 3, 4]);
+  });
+
+  it("bonuses array shorter than dimensions crashes — documents unguarded edge case", () => {
+    const items = [
+      { a: "X", b: "1" },
+      { a: "Y", b: "2" },
+    ];
+    // bonuses[1] is undefined → score becomes NaN → bestIdx stays -1 → items[-1] throws
+    expect(() =>
+      diverseScorePick(items, [(i) => i.a, (i) => i.b], [10]),
+    ).toThrow();
+  });
+
+  it("three dimensions — covers all values greedily", () => {
+    interface Item { x: string; y: string; z: string }
+    const items: Item[] = [
+      { x: "A", y: "1", z: "!" },
+      { x: "B", y: "1", z: "!" },
+      { x: "A", y: "2", z: "@" },
+    ];
+    const order = diverseScorePick(items, [(i) => i.x, (i) => i.y, (i) => i.z]);
+    // First pick: idx 0 (3 unseen values). Second: idx 2 introduces y="2", z="@" (2 new)
+    // vs idx 1 which introduces x="B" (1 new). So idx 2 should come second.
+    expect(order[0]).toBe(0);
+    expect(order[1]).toBe(2);
+    expect(order[2]).toBe(1);
+  });
+});
+
+describe("computeRotationSchedule — edge cases", () => {
+  it("empty order produces empty schedule", () => {
+    const schedule = computeRotationSchedule(surfaces, [], 4000, () => false);
+    expect(schedule).toEqual([]);
+  });
+
+  it("zero baseDwell produces zero-dwell entries", () => {
+    const order = [0, 1];
+    const schedule = computeRotationSchedule(surfaces, order, 0, () => false);
+    expect(schedule).toHaveLength(2);
+    for (const e of schedule) expect(e.dwell).toBe(0);
+    expect(cycleDuration(schedule)).toBe(0);
+  });
+
+  it("all-critical schedule doubles every entry", () => {
+    const order = [0, 1, 2];
+    const schedule = computeRotationSchedule(surfaces, order, 1000, () => true);
+    for (const e of schedule) {
+      expect(e.critical).toBe(true);
+      expect(e.dwell).toBe(2000);
+    }
+    expect(cycleDuration(schedule)).toBe(6000);
+  });
+
+  it("no-critical schedule keeps base dwell for all", () => {
+    const order = [0, 1, 2];
+    const schedule = computeRotationSchedule(surfaces, order, 1000, () => false);
+    for (const e of schedule) {
+      expect(e.critical).toBe(false);
+      expect(e.dwell).toBe(1000);
+    }
+  });
+
+  it("single-entry schedule has offset 0", () => {
+    const schedule = computeRotationSchedule(surfaces, [3], 5000, () => false);
+    expect(schedule).toHaveLength(1);
+    expect(schedule[0].offset).toBe(0);
+    expect(schedule[0].item).toBe(surfaces[3]);
+  });
+});
+
+describe("cycleProgress — boundary & negative", () => {
+  it("negative elapsed wraps and produces valid 0-1 progress", () => {
+    const schedule = buildSchedule(4000);
+    const p = cycleProgress(schedule, -500);
+    expect(p).toBeGreaterThanOrEqual(0);
+    expect(p).toBeLessThanOrEqual(1);
+  });
+
+  it("progress resets to 0 at exact entry boundary transition", () => {
+    const schedule = buildSchedule(4000);
+    // At the exact start of entry[1], progress within that entry should be 0
+    const p = cycleProgress(schedule, schedule[1].offset);
+    expect(p).toBeCloseTo(0, 5);
+  });
+
+  it("zero-dwell schedule returns 0 progress", () => {
+    const schedule = computeRotationSchedule(surfaces, [0], 0, () => false);
+    expect(cycleProgress(schedule, 1000)).toBe(0);
+  });
+});
+
+describe("activeEntryAt — single-entry & stress", () => {
+  it("single-entry schedule always returns that entry", () => {
+    const schedule = computeRotationSchedule(surfaces, [0], 3000, () => false);
+    expect(activeEntryAt(schedule, 0)).toBe(schedule[0]);
+    expect(activeEntryAt(schedule, 1500)).toBe(schedule[0]);
+    expect(activeEntryAt(schedule, 2999)).toBe(schedule[0]);
+    expect(activeEntryAt(schedule, 3000)).toBe(schedule[0]); // wraps
+  });
+
+  it("mid-entry lookup resolves to correct entry", () => {
+    const schedule = buildSchedule(4000);
+    // Entry[1] spans [offset, offset+dwell). Midpoint must resolve to entry[1].
+    const mid = schedule[1].offset + schedule[1].dwell / 2;
+    expect(activeEntryAt(schedule, mid)).toBe(schedule[1]);
+  });
+});
+
+describe("diverseScorePick pipeline integration", () => {
+  it("diverseScorePick -> schedule -> every entry reachable", () => {
+    const order = diverseScorePick(surfaces, [
+      (s) => s.risk,
+      (s) => s.name.charAt(0),
+    ]);
+    const schedule = computeRotationSchedule(surfaces, order, 3000, (s) => s.risk === "High");
+    for (const entry of schedule) {
+      expect(activeEntryAt(schedule, entry.offset)!.item).toBe(entry.item);
+    }
+  });
+
+  it("weighted dimensions shift pick order when categories overlap", () => {
+    interface Item { cat: string; tag: string }
+    const items: Item[] = [
+      { cat: "A", tag: "X" },  // 0
+      { cat: "A", tag: "Y" },  // 1
+      { cat: "B", tag: "X" },  // 2
+    ];
+    // Equal weights: first=0 (tie→lowest idx), second=2 (cat=B unseen +25, tag=X seen 0) vs 1 (cat=A seen 0, tag=Y unseen +25) → tie→lower idx=1
+    const equal = diverseScorePick(items, [(i) => i.cat, (i) => i.tag], [25, 25]);
+    // Heavy cat weight: second pick: idx 2 scores cat=B unseen +100 vs idx 1 scores tag=Y unseen +1 → idx 2 wins
+    const catHeavy = diverseScorePick(items, [(i) => i.cat, (i) => i.tag], [100, 1]);
+    expect(equal[1]).toBe(1);    // tie-break picks lower index
+    expect(catHeavy[1]).toBe(2); // cat bonus dominates
+  });
+});
+
 describe("pipeline integration", () => {
   it("full pipeline: diversityPick -> schedule -> every entry reachable via activeEntryAt", () => {
     const order = diversityPick(surfaces, (s) => s.risk);

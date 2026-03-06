@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.13.2] - 2026-03-06
+
+### Added
+- **20 new edge-case tests for diversity-pick and rotation pipeline** — Covers `diverseScorePick` degeneration (all-same dimensions), three-dimension greedy ordering, short-bonuses crash detection (documents unguarded edge case), `computeRotationSchedule` with empty/zero/all-critical/no-critical/single-entry inputs, `cycleProgress` negative elapsed wrapping and entry boundary transitions, zero-dwell schedule safety, `activeEntryAt` single-entry and mid-entry resolution, and `diverseScorePick` end-to-end pipeline integration with weighted dimension ordering. Total suite: 76 tests passing
+
 ## [0.13.1] - 2026-03-06
 
 ### Fixed
