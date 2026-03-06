@@ -14,6 +14,54 @@ export interface ScheduleEntry<T = unknown> {
 }
 
 /**
+ * Greedy set-cover pick — maximises diversity across multiple dimensions.
+ * Each round scores every remaining candidate by how many *unseen* values
+ * it would introduce (marginal diversity bonus). Ties fall back to original
+ * order so quality ranking is preserved.
+ *
+ * @param dimensions  Array of key-extractors (e.g. risk, material type)
+ * @param bonuses     Per-dimension bonus for an unseen value (default 25 each)
+ */
+export function diverseScorePick<T>(
+  items: T[],
+  dimensions: Array<(item: T) => string>,
+  bonuses?: number[],
+): number[] {
+  if (items.length === 0) return [];
+
+  const bons = bonuses ?? dimensions.map(() => 25);
+  const seen: Set<string>[] = dimensions.map(() => new Set());
+  const remaining = new Set(items.map((_, i) => i));
+  const result: number[] = [];
+
+  while (remaining.size > 0) {
+    let bestIdx = -1;
+    let bestScore = -Infinity;
+
+    for (const idx of remaining) {
+      let score = 0;
+      for (let d = 0; d < dimensions.length; d++) {
+        const val = dimensions[d](items[idx]);
+        if (!seen[d].has(val)) score += bons[d];
+      }
+      // Tie-break: prefer lower original index (preserves quality order)
+      if (score > bestScore || (score === bestScore && (bestIdx === -1 || idx < bestIdx))) {
+        bestScore = score;
+        bestIdx = idx;
+      }
+    }
+
+    result.push(bestIdx);
+    remaining.delete(bestIdx);
+    for (let d = 0; d < dimensions.length; d++) {
+      seen[d].add(dimensions[d](items[bestIdx]));
+    }
+  }
+
+  return result;
+}
+
+/**
  * Reorders items for maximum visual diversity — alternates by a
  * keyed severity so adjacent entries never share the same category.
  * Returns indices into the original array.

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   diversityPick,
+  diverseScorePick,
   computeRotationSchedule,
   cycleDuration,
   cycleIndex,
@@ -117,6 +118,45 @@ describe("diversityPick", () => {
     const order = diversityPick(unique, (s) => s.risk);
     expect(order).toHaveLength(4);
     expect(new Set(order).size).toBe(4);
+  });
+});
+
+describe("diverseScorePick", () => {
+  it("returns all indices for multi-dimension input", () => {
+    const result = diverseScorePick(
+      surfaces,
+      [(s) => s.risk, (s) => (["Marble", "Granite", "Quartzite"].includes(s.name) ? "natural" : "engineered")],
+    );
+    expect(result).toHaveLength(surfaces.length);
+    expect(new Set(result).size).toBe(surfaces.length);
+  });
+
+  it("prioritises unseen dimension values — first two picks cover different risks", () => {
+    const order = diverseScorePick(surfaces, [(s) => s.risk]);
+    expect(surfaces[order[0]].risk).not.toBe(surfaces[order[1]].risk);
+  });
+
+  it("returns empty for empty input", () => {
+    expect(diverseScorePick([], [() => "x"])).toEqual([]);
+  });
+
+  it("custom bonuses shift priority — higher bonus dimension dominates", () => {
+    interface Item { a: string; b: string }
+    const items: Item[] = [
+      { a: "X", b: "1" },
+      { a: "X", b: "2" },
+      { a: "Y", b: "1" },
+    ];
+    // Heavy bonus on dimension b — should prefer seeing "2" early
+    const order = diverseScorePick(items, [(i) => i.a, (i) => i.b], [1, 100]);
+    // First pick: index 0 (both unseen, lowest index wins)
+    // Second pick: index 1 (b="2" unseen, +100) beats index 2 (a="Y" unseen, +1)
+    expect(order[1]).toBe(1);
+  });
+
+  it("is deterministic across calls", () => {
+    const dims = [(s: Surface) => s.risk];
+    expect(diverseScorePick(surfaces, dims)).toEqual(diverseScorePick(surfaces, dims));
   });
 });
 

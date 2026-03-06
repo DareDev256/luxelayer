@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.10.0] - 2026-03-06
+
+### Added
+- **Diverse rotation mode** — new `diverseScorePick` algorithm uses greedy set-cover to maximise variety across multiple dimensions (risk level + material type). Each pick round applies marginal diversity bonuses (+25 for unseen risk, +15 for unseen material) to re-rank candidates, producing wider surface mixes without sacrificing quality ordering
+- **Mode toggle UI** — accessible radiogroup with Auto/Diverse buttons in SurfaceFinder. Switching modes rebuilds the rotation schedule in real-time. Auto uses single-dimension round-robin; Diverse uses multi-dimension scored selection
+- **Material type metadata** — surfaces now categorised as `natural` (Marble, Granite, Quartzite) or `engineered` (Quartz, Porcelain, Solid Surface), enabling the Diverse strategy to alternate between stone types
+- **5 new tests** for `diverseScorePick` (multi-dimension coverage, unseen-value priority, empty input, custom bonus weighting, determinism) plus 2 SurfaceFinder integration tests for the mode toggle
+
 ## [0.9.4] - 2026-03-06
 
 ### Fixed

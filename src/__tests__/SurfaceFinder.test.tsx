@@ -12,7 +12,8 @@ function renderFinder() {
 describe("SurfaceFinder", () => {
   it("renders all 6 surface options as radio buttons", () => {
     const { view } = renderFinder();
-    const radios = view.getAllByRole("radio");
+    const surfaceGroup = view.getByRole("radiogroup", { name: /countertop/ });
+    const radios = within(surfaceGroup).getAllByRole("radio");
     expect(radios).toHaveLength(6);
     expect(radios.map((r) => r.textContent)).toEqual([
       "Marble", "Quartz", "Granite", "Quartzite", "Porcelain", "Solid Surface",
@@ -21,7 +22,8 @@ describe("SurfaceFinder", () => {
 
   it("starts with auto-rotation active — one surface is highlighted", () => {
     const { view } = renderFinder();
-    const radios = view.getAllByRole("radio");
+    const surfaceGroup = view.getByRole("radiogroup", { name: /countertop/ });
+    const radios = within(surfaceGroup).getAllByRole("radio");
     const checkedRadios = radios.filter(
       (r) => r.getAttribute("aria-checked") === "true",
     );
@@ -69,7 +71,7 @@ describe("SurfaceFinder", () => {
 
   it("wraps surface pills in a radiogroup with accessible label", () => {
     const { view } = renderFinder();
-    const group = view.getByRole("radiogroup");
+    const group = view.getByRole("radiogroup", { name: /countertop/ });
     expect(group).toHaveAttribute("aria-label", "Select your countertop surface type");
   });
 
@@ -77,5 +79,33 @@ describe("SurfaceFinder", () => {
     const { container } = renderFinder();
     const liveRegion = container.querySelector("[aria-live='polite']");
     expect(liveRegion).toBeInTheDocument();
+  });
+
+  it("renders rotation mode toggle with Auto and Diverse options", () => {
+    const { view } = renderFinder();
+    const modeGroup = view.getByRole("radiogroup", { name: "Rotation mode" });
+    const modeButtons = within(modeGroup).getAllByRole("radio");
+    expect(modeButtons).toHaveLength(2);
+    expect(modeButtons[0]).toHaveTextContent("Auto");
+    expect(modeButtons[1]).toHaveTextContent("Diverse");
+    // Auto is default
+    expect(modeButtons[0]).toHaveAttribute("aria-checked", "true");
+    expect(modeButtons[1]).toHaveAttribute("aria-checked", "false");
+  });
+
+  it("switches to Diverse mode and still shows a surface", async () => {
+    const user = userEvent.setup();
+    const { view } = renderFinder();
+    const diverseBtn = view.getByRole("radio", { name: "Diverse" });
+    await user.click(diverseBtn);
+    expect(diverseBtn).toHaveAttribute("aria-checked", "true");
+    // Auto-rotation should still highlight one surface pill
+    const surfaceRadios = within(
+      view.getByRole("radiogroup", { name: /countertop/ }),
+    ).getAllByRole("radio");
+    const checked = surfaceRadios.filter(
+      (r) => r.getAttribute("aria-checked") === "true",
+    );
+    expect(checked).toHaveLength(1);
   });
 });
