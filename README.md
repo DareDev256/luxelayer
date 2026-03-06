@@ -23,7 +23,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
 - **Keyboard-accessible mobile menu** — Escape key dismisses the hamburger menu with focus return to the trigger button (WCAG 2.1 SC 2.4.3)
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
-- **Security-hardened** — CSP with `unsafe-eval` removed (only `unsafe-inline` remains for Next.js hydration), `upgrade-insecure-requests`, HSTS with preload, X-Frame-Options DENY, Permissions-Policy; **server-validated API route** (`/api/contact`) with sliding-window IP rate limiting (5 req/min), Content-Type enforcement, and isomorphic `validateContactForm()` running identically on client and server; contact form hardened with honeypot field, timing-based bot detection, ASCII-only email validation (blocks unicode homoglyph phishing), control-char stripping, regex enforcement, and surface-type allowlist; `/.well-known/security.txt` (RFC 9116) for responsible disclosure
+- **Security-hardened** — CSP with `unsafe-eval` removed (only `unsafe-inline` remains for Next.js hydration), `upgrade-insecure-requests`, HSTS with preload, X-Frame-Options DENY, Permissions-Policy; **server-validated API route** (`/api/contact`) with sliding-window IP rate limiting (5 req/min), Content-Type enforcement, isomorphic `validateContactForm()` running identically on client and server, and **email delivery via Resend** (zero-dependency `fetch`, graceful degradation when unconfigured, fire-and-forget with server-side logging); contact form hardened with honeypot field, timing-based bot detection, ASCII-only email validation (blocks unicode homoglyph phishing), control-char stripping, regex enforcement, and surface-type allowlist; `/.well-known/security.txt` (RFC 9116) for responsible disclosure
 - **104 tests** — Vitest + Testing Library covering Icon rendering, SurfaceFinder interactions (selection, toggle, mode switching, auto-rotation, ARIA radiogroup), FAQ accordion behavior, 55 pure-function auto-select tests (including bonuses-length mismatch guard), 19 client validation tests, and 8 server-side security parity tests (prototype pollution, CRLF injection, unicode homoglyph, log injection, payload overflow, null byte injection, allowlist exhaustiveness)
 
 ## Tech Stack
@@ -112,6 +112,22 @@ npm run lint
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+### Environment Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `RESEND_API_KEY` | For email delivery | — | [Resend](https://resend.com) API key. Without it, contact submissions are logged but not emailed |
+| `CONTACT_TO` | No | `delivered@resend.dev` | Recipient email for consultation requests |
+| `CONTACT_FROM` | No | `LuxeLayer <onboarding@resend.dev>` | Sender address (must be a verified Resend domain) |
+
+Create a `.env.local` file in the project root:
+
+```bash
+RESEND_API_KEY=re_xxxxx
+CONTACT_TO=hello@luxelayer.com
+CONTACT_FROM="LuxeLayer <hello@luxelayer.com>"
+```
 
 ### AI-Assisted Development (Optional)
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateContactForm } from "@/lib/validation";
+import { sendContactEmail } from "@/lib/email";
 
 /* ─── Rate Limiter ───────────────────────────────────────── */
 
@@ -70,10 +71,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── Process submission ──
-  // TODO: Forward result.data to email service / CRM.
+  // ── Forward to email service ──
   // result.data is fully sanitised — safe to pass downstream.
-  console.info("[contact] submission from", ip, result.data.email);
+  const email = await sendContactEmail(result.data);
 
+  if (!email.success) {
+    console.warn("[contact] email delivery failed:", email.detail);
+  } else {
+    console.info("[contact] email sent:", email.detail, "from", ip);
+  }
+
+  // Always return success to the user — their submission is valid regardless
+  // of email delivery status. Failed sends are logged for ops visibility.
   return NextResponse.json({ ok: true }, { status: 200 });
 }

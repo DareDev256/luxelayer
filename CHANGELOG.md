@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.15.1] - 2026-03-06
+
+### Fixed
+- **Contact form email delivery** — Replaced the `TODO` in `/api/contact` with a production-ready email integration via the Resend REST API. New `src/lib/email.ts` module uses raw `fetch` (zero dependencies) with graceful degradation: if `RESEND_API_KEY` is not configured, submissions still succeed and are logged server-side. Failed email sends never block the user response — fire-and-forget with ops-visible `console.warn`. Email body uses the project's charcoal/gold palette with a clean HTML table layout. Supports `RESEND_API_KEY`, `CONTACT_TO`, and `CONTACT_FROM` environment variables
+
 ## [0.15.0] - 2026-03-06
 
 ### Security
