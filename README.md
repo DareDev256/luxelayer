@@ -23,6 +23,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 - **Security-hardened** — CSP, HSTS, X-Frame-Options, Permissions-Policy headers; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
+- **20 component tests** — Vitest + Testing Library covering Icon rendering (filled/outlined viewBox logic, accessibility), SurfaceFinder interactions (selection, toggle, surface switching, ARIA radiogroup contract), and FAQ accordion behavior (expand/collapse, single-open constraint, aria-controls/labelledby wiring)
 
 ## Tech Stack
 
@@ -32,6 +33,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 | UI          | React 19             |
 | Styling     | Tailwind CSS 4       |
 | Language    | TypeScript 5         |
+| Testing     | Vitest + Testing Library |
 | Deployment  | Vercel               |
 | Fonts       | Geist (via next/font) |
 

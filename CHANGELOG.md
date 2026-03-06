@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.7.2] - 2026-03-06
+
+### Added
+- Vitest + Testing Library test infrastructure with jsdom environment and `@` path alias support
+- 6 Icon component tests — validates all 9 registered icons render, filled vs outlined viewBox/stroke branching, aria-hidden decorative marking, custom className/strokeWidth passthrough, and strokeWidth silently ignored on filled icons
+- 7 SurfaceFinder interaction tests — verifies 6 radio buttons render with correct names, empty-state prompt on no selection, profile display on selection (tagline + risk level + threats + CTA href), toggle-off on re-click, surface switching without stale state, radiogroup ARIA label, and aria-live polite region
+- 7 FAQ accordion tests — asserts all 8 triggers render collapsed, expansion reveals answer text, single-open constraint (opening one closes others), collapse on re-click, aria-controls→panel ID wiring, and region→aria-labelledby back-reference
+
 ## [0.7.1] - 2026-03-06
 
 ### Fixed
