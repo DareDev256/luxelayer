@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.8.1] - 2026-03-06
+
+### Fixed
+- `SurfaceFinder` was the only section component still using raw `<section>` with inline layout classes — migrated to the `Section` wrapper extracted in v0.8.0 for consistent padding, max-width, and background alternation
+- Mobile hamburger menu had no Escape key handler — added `keydown` listener that dismisses the menu and returns focus to the hamburger button (WCAG 2.1 SC 2.4.3 focus management)
+- `useActiveSection` was referentially fragile — the `useEffect` dependency was the raw `sectionIds` array, so any non-memoized caller would trigger infinite IntersectionObserver reconnection every render. Now stabilises internally via serialised key comparison (`sectionIds.join(",")`)
+
 ## [0.8.0] - 2026-03-06
 
 ### Changed

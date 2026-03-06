@@ -18,9 +18,10 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
 - **SEO-optimized** — Open Graph metadata, semantic HTML, keyword-rich content
-- **Active section tracking** — Navigation highlights the current section with a sliding gold underline (desktop) or scaling dot (mobile) using Intersection Observer ratio comparison with race-condition-safe cleanup (ratios Map cleared on effect teardown, comparison scoped to tracked IDs only)
+- **Active section tracking** — Navigation highlights the current section with a sliding gold underline (desktop) or scaling dot (mobile) using Intersection Observer ratio comparison with race-condition-safe cleanup (ratios Map cleared on effect teardown, comparison scoped to tracked IDs only, referentially stable via serialised key comparison)
 - **Scroll-reveal animations** — Intersection Observer-powered directional reveals on every section with expo-out easing and stagger delays
 - **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
+- **Keyboard-accessible mobile menu** — Escape key dismisses the hamburger menu with focus return to the trigger button (WCAG 2.1 SC 2.4.3)
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 - **Security-hardened** — CSP, HSTS, X-Frame-Options, Permissions-Policy headers; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
 - **20 component tests** — Vitest + Testing Library covering Icon rendering (filled/outlined viewBox logic, accessibility), SurfaceFinder interactions (selection, toggle, surface switching, ARIA radiogroup contract), and FAQ accordion behavior (expand/collapse, single-open constraint, aria-controls/labelledby wiring)

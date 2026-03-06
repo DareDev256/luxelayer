@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 
 /** Nav link config — `id` must match the target section's `id` attribute for IO tracking. */
@@ -19,9 +19,26 @@ const navLinks = [
  */
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const sectionIds = useMemo(() => navLinks.map((l) => l.id), []);
   const activeSection = useActiveSection(sectionIds);
+
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    // Return focus to the hamburger button when menu closes (WCAG 2.1 SC 2.4.3)
+    menuButtonRef.current?.focus();
+  }, []);
+
+  // Escape key dismisses mobile menu
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen, closeMenu]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0d0d0d]/90 backdrop-blur-md border-b border-white/5">
@@ -69,6 +86,7 @@ export default function Header() {
 
         {/* Mobile hamburger */}
         <button
+          ref={menuButtonRef}
           className="md:hidden text-warm-gray"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
@@ -118,7 +136,7 @@ export default function Header() {
                     ? "var(--color-gold)"
                     : "rgb(245 240 232 / 0.5)",
                 }}
-                onClick={() => setMenuOpen(false)}
+                onClick={closeMenu}
               >
                 {/* Active dot indicator for mobile */}
                 <span
@@ -136,7 +154,7 @@ export default function Header() {
           <a
             href="#contact"
             className="bg-gold text-charcoal font-semibold px-5 py-2 rounded text-center hover:bg-gold-light transition-colors"
-            onClick={() => setMenuOpen(false)}
+            onClick={closeMenu}
           >
             Get a Quote
           </a>

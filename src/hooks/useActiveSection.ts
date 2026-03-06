@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 /**
  * Tracks which section is currently most visible in the viewport.
@@ -16,13 +16,22 @@ import { useState, useEffect, useRef } from "react";
  * than the full Map — fast-scroll scenarios where IO batches miss
  * intermediate thresholds can leave orphaned entries that would
  * otherwise win the "best ratio" comparison.
+ *
+ * Referential stability: the effect dependency is a serialised key
+ * string, not the array reference — callers don't need to memoize
+ * the `sectionIds` array to avoid observer thrashing.
  */
 export function useActiveSection(sectionIds: string[]): string | null {
   const [active, setActive] = useState<string | null>(null);
   const ratios = useRef<Map<string, number>>(new Map());
 
+  // Stabilise: only re-run the effect when the *contents* change,
+  // not when the caller passes a new array reference with the same IDs.
+  const stableKey = sectionIds.join(",");
+  const stableIds = useMemo(() => sectionIds, [stableKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
-    const elements = sectionIds
+    const elements = stableIds
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
 
@@ -30,7 +39,7 @@ export function useActiveSection(sectionIds: string[]): string | null {
 
     // Snapshot the tracked set so the callback closure only considers
     // IDs from this effect cycle — prevents stale-entry races.
-    const trackedIds = new Set(sectionIds);
+    const trackedIds = new Set(stableIds);
 
     // Clear any leftover ratios from the previous observer cycle.
     ratios.current.clear();
@@ -73,7 +82,7 @@ export function useActiveSection(sectionIds: string[]): string | null {
       observer.disconnect();
       ratioMap.clear();
     };
-  }, [sectionIds]);
+  }, [stableIds]);
 
   return active;
 }
