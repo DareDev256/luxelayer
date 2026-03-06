@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.5.1] - 2026-03-06
+
+### Added
+- Architecture section in README — component composition tree, Intersection Observer strategy comparison table, reusable component API docs, and custom color token reference
+- Design decision docs for Tailwind v4 `@theme inline` pattern and `will-change` lifecycle management
+- JSDoc documentation on `Header` component, `navLinks` config, and `Home` page composition explaining the conversion funnel ordering
+- Inline doc linking `navLinks.id` to section `id` attributes for IO tracking clarity
+
 ## [0.5.0] - 2026-03-06
 
 ### Changed

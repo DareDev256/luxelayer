@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 
+/** Nav link config — `id` must match the target section's `id` attribute for IO tracking. */
 const navLinks = [
   { label: "Services", href: "#services", id: "services" },
   { label: "How It Works", href: "#how-it-works", id: "how-it-works" },
@@ -11,6 +12,11 @@ const navLinks = [
   { label: "FAQ", href: "#faq", id: "faq" },
 ];
 
+/**
+ * Fixed site header with desktop/mobile navigation.
+ * Active section is tracked via useActiveSection (Intersection Observer)
+ * and visualized as a sliding gold underline (desktop) or scaling dot (mobile).
+ */
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 

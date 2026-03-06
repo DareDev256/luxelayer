@@ -99,6 +99,61 @@ npm run lint
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
 
+## Architecture
+
+### Component Composition
+
+The page is a single vertical composition in `page.tsx` — each section is a self-contained component wrapped in `ScrollReveal` for entrance animations. No routing, no shared state beyond the active section tracker:
+
+```
+Header (fixed, reads activeSection)
+  └─ useActiveSection() ← IO ratio comparison across all section IDs
+main
+  ├─ Hero (no ScrollReveal — always visible)
+  ├─ ScrollReveal > Problem
+  ├─ ScrollReveal > Services     (direction="right")
+  ├─ ScrollReveal > HowItWorks
+  ├─ ScrollReveal > SurfaceTypes (direction="left")
+  ├─ ScrollReveal > Gallery
+  ├─ ScrollReveal > Testimonials (direction="fade")
+  ├─ ScrollReveal > FAQ
+  └─ ScrollReveal > CTA          (direction="up")
+Footer
+```
+
+### Intersection Observer Strategy
+
+Two hooks, same API, different jobs:
+
+| Hook | Purpose | Threshold | Lifecycle |
+|------|---------|-----------|-----------|
+| `useActiveSection` | Track *which* section is most visible | 11 thresholds (0–1 in 0.1 steps) | Persistent — always observing |
+| `useScrollReveal` | Track *if* a section has entered view | Single threshold (0.15) | One-shot — unobserves after trigger |
+
+`useActiveSection` uses asymmetric `rootMargin: "-10% 0px -50% 0px"` to bias detection toward the top 40% of the viewport — where the eye naturally rests during scroll. `useScrollReveal` uses `-40px` bottom margin to trigger slightly before the element fully enters.
+
+### Reusable Components
+
+**`SectionHeader`** — Extracted from 7 section components. Accepts `label` (gold uppercase tag), `title` (h2), and optional `description`. Conditionally removes bottom margin on `h2` when no description follows.
+
+**`ScrollReveal`** — Directional reveal wrapper. Manages `will-change` lifecycle: applies `transform, opacity` hint pre-animation, resets to `auto` post-animation to prevent compositor layer bloat. Uses `cubic-bezier(0.16, 1, 0.3, 1)` (expo-out) for natural deceleration.
+
+### Custom Color Tokens
+
+Defined in `globals.css` via `@theme inline`, not in a Tailwind config file (Tailwind v4 pattern):
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `gold` | `#c9a84c` | Accent, CTAs, active states |
+| `gold-light` | `#e2c97e` | Hover states |
+| `gold-dark` | `#a88a3a` | Pressed states |
+| `charcoal` | `#1a1a1a` | Section backgrounds |
+| `charcoal-light` | `#2a2a2a` | Hover backgrounds, borders |
+| `warm-gray` | `#f5f0e8` | Body text, headings |
+| `cream` | `#faf7f0` | Light accent text |
+
+Background (`--background: #0d0d0d`) is darker than `charcoal` — creates depth between the page base and section containers.
+
 ## Design Decisions
 
 **Color palette** — `#0d0d0d` charcoal base with `gold` accents. No gradients on backgrounds — the luxury feel comes from generous whitespace, sharp typography, and real photography doing the heavy lifting.
@@ -106,6 +161,10 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 **Single-page architecture** — This is a conversion-focused landing page, not a content site. One scroll, one CTA, one goal: book a consultation. No routing complexity needed.
 
 **No CMS** — Content changes infrequently. Hardcoded copy keeps the bundle tiny and eliminates external dependencies. When the business scales, a headless CMS can slot in without restructuring.
+
+**Tailwind v4 `@theme inline`** — Color tokens live in `globals.css` instead of a separate config file. This is the Tailwind v4 way — colocates design tokens with the styles that use them, and the `inline` keyword prevents generating unused utility classes.
+
+**`will-change` lifecycle** — Applied *before* animation, removed *after*. Permanent `will-change` promotes elements to compositor layers that eat GPU memory. On a long page with 8+ animated sections, that adds up. The hook manages this automatically.
 
 ## License
 

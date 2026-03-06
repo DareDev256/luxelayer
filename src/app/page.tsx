@@ -11,6 +11,14 @@ import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
+/**
+ * Landing page composition — sections are ordered by conversion funnel:
+ * Attention (Hero) → Problem → Solution (Services) → Process (HowItWorks)
+ * → Proof (Gallery, Testimonials) → Objection handling (FAQ) → Action (CTA).
+ *
+ * Each below-the-fold section is wrapped in ScrollReveal with varied
+ * directions to create visual rhythm without feeling repetitive.
+ */
 export default function Home() {
   return (
     <>
