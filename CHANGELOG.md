@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.14.0] - 2026-03-06
+
+### Changed
+- **SurfaceFinder decomposition** — Extracted `SurfacePills` (pill selector bar with progress indicators) and `SurfaceDetail` (result panel with grid-row expand/collapse animation) into dedicated components. SurfaceFinder drops from 203 to 126 lines and becomes a pure orchestrator — owns rotation state, mode toggle, and delegates all rendering to focused sub-components. Each extracted component has a typed props interface and JSDoc describing its visual contract
+- **Removed unused imports** — `Button` and `Icon` no longer imported by SurfaceFinder (now consumed by SurfaceDetail only)
+
 ## [0.13.2] - 2026-03-06
 
 ### Added

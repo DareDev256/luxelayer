@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import Button from "./Button";
-import Icon from "./Icon";
 import Section from "./Section";
 import SectionHeader from "./SectionHeader";
+import SurfacePills from "./SurfacePills";
+import SurfaceDetail from "./SurfaceDetail";
 import {
   diversityPick,
   diverseScorePick,
@@ -90,37 +90,13 @@ export default function SurfaceFinder() {
       </div>
 
       {/* Surface selector pills */}
-      <div className="flex flex-wrap justify-center gap-3 mb-12" role="radiogroup" aria-label="Select your countertop surface type">
-        {profiles.map((p, i) => {
-          const isActive = activeIndex === i;
-          const isAutoActive = selected === null && isActive;
-          return (
-            <button
-              key={p.name}
-              role="radio"
-              aria-checked={isActive}
-              onClick={() => handleSelect(i)}
-              className={`
-                relative px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-300 overflow-hidden
-                ${isActive
-                  ? "border-gold bg-gold/10 text-gold shadow-[0_0_12px_rgba(201,168,76,0.2)]"
-                  : "border-white/10 text-warm-gray/50 hover:border-white/25 hover:text-warm-gray/80"
-                }
-              `}
-            >
-              {/* Auto-rotation progress bar — only visible during auto-play */}
-              {isAutoActive && (
-                <span
-                  className="absolute bottom-0 left-0 h-0.5 bg-gold/40 transition-[width] duration-100 ease-linear"
-                  style={{ width: `${rotation.progress * 100}%` }}
-                  aria-hidden="true"
-                />
-              )}
-              {p.name}
-            </button>
-          );
-        })}
-      </div>
+      <SurfacePills
+        profiles={profiles}
+        activeIndex={activeIndex}
+        selected={selected}
+        progress={rotation.progress}
+        onSelect={handleSelect}
+      />
 
       {/* Rotation state indicator — visible only during auto-play */}
       {selected === null && (
@@ -134,61 +110,7 @@ export default function SurfaceFinder() {
       )}
 
       {/* Result panel — always mounted so CSS transitions play on both expand and collapse */}
-      <div
-        className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
-        style={{
-          gridTemplateRows: hasProfile ? "1fr" : "0fr",
-          opacity: hasProfile ? 1 : 0,
-        }}
-        aria-live="polite"
-        aria-hidden={!hasProfile}
-      >
-        <div className="overflow-hidden">
-          <div className="border border-gold/15 rounded-lg p-8 bg-[#151515]">
-            {/* Header row */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-              <div>
-                <h3 className="text-2xl font-semibold text-gold">{display.name}</h3>
-                <p className="text-warm-gray/40 text-sm mt-1">{display.tagline}</p>
-              </div>
-              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${display.riskColor}`}>
-                <Icon name="alert" className="w-3.5 h-3.5" />
-                {display.riskLevel} Risk
-              </span>
-            </div>
-
-            {/* Two-column layout */}
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Threats */}
-              <div>
-                <h4 className="text-xs uppercase tracking-wider text-warm-gray/30 mb-3 font-semibold">Without Protection</h4>
-                <ul className="space-y-2.5">
-                  {display.threats.map((threat) => (
-                    <li key={threat} className="flex items-start gap-2.5 text-sm text-warm-gray/60">
-                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-400/60 shrink-0" />
-                      {threat}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Protection */}
-              <div>
-                <h4 className="text-xs uppercase tracking-wider text-warm-gray/30 mb-3 font-semibold">LuxeLayer Solution</h4>
-                <p className="text-sm text-warm-gray/70 leading-relaxed mb-5">{display.protection}</p>
-                <Button
-                  href="#contact"
-                  size="md"
-                  tabIndex={hasProfile ? 0 : -1}
-                >
-                  Get a Quote
-                  <Icon name="bolt" className="w-3.5 h-3.5" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SurfaceDetail profile={display} visible={hasProfile} />
 
       {/* Empty state prompt — fades out when a profile is selected or auto-rotation is active */}
       <p
