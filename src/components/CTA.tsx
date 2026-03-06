@@ -14,23 +14,42 @@ export default function CTA() {
             you how LuxeLayer keeps your countertops flawless for years to come.
           </p>
 
-          <form className="max-w-md mx-auto space-y-4">
+          <form className="max-w-md mx-auto space-y-4" action="#contact" method="POST">
             <input
               type="text"
+              name="name"
               placeholder="Your Name"
+              required
+              maxLength={100}
+              autoComplete="name"
+              pattern="[A-Za-z\s\-'.]{1,100}"
+              title="Letters, spaces, hyphens, and apostrophes only"
               className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray placeholder:text-warm-gray/30 focus:border-gold/50 focus:outline-none transition-colors"
             />
             <input
               type="email"
+              name="email"
               placeholder="Email Address"
+              required
+              maxLength={254}
+              autoComplete="email"
               className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray placeholder:text-warm-gray/30 focus:border-gold/50 focus:outline-none transition-colors"
             />
             <input
               type="tel"
+              name="phone"
               placeholder="Phone Number"
+              maxLength={20}
+              autoComplete="tel"
+              pattern="[\d\s\-\+\(\)]{7,20}"
+              title="Valid phone number (digits, spaces, dashes, parentheses)"
               className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray placeholder:text-warm-gray/30 focus:border-gold/50 focus:outline-none transition-colors"
             />
-            <select className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray/50 focus:border-gold/50 focus:outline-none transition-colors">
+            <select
+              name="surface"
+              required
+              className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray/50 focus:border-gold/50 focus:outline-none transition-colors"
+            >
               <option value="">Surface Type</option>
               <option value="marble">Marble</option>
               <option value="quartz">Quartz</option>
@@ -41,8 +60,10 @@ export default function CTA() {
               <option value="other">Other</option>
             </select>
             <textarea
+              name="message"
               placeholder="Tell us about your project (surface size, location, concerns)..."
               rows={4}
+              maxLength={1000}
               className="w-full px-4 py-3 bg-[#0d0d0d] border border-white/10 rounded text-warm-gray placeholder:text-warm-gray/30 focus:border-gold/50 focus:outline-none transition-colors resize-none"
             />
             <button

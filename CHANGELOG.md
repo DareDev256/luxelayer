@@ -2,6 +2,15 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.5.2] - 2026-03-06
+
+### Security
+- Added comprehensive security headers via `next.config.ts` — CSP, HSTS (2-year max-age with preload), X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy, and Permissions-Policy
+- Hardened CTA contact form with `required` attributes, `maxLength` caps, regex `pattern` validation on name/phone fields, `name` attributes for proper form semantics, and `autoComplete` hints
+- Added `rel="noopener noreferrer"` and `target="_blank"` to external social links in Footer to prevent reverse tabnapping
+- CSP `form-action 'self'` restricts form submissions to same-origin only
+- CSP `frame-ancestors 'none'` provides defense-in-depth alongside X-Frame-Options
+
 ## [0.5.1] - 2026-03-06
 
 ### Added

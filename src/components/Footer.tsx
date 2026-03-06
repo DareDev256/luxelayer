@@ -83,13 +83,13 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} LuxeLayer. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-warm-gray/30 text-xs">
-            <a href="#" className="hover:text-gold transition-colors">
+            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
               Instagram
             </a>
-            <a href="#" className="hover:text-gold transition-colors">
+            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
               Facebook
             </a>
-            <a href="#" className="hover:text-gold transition-colors">
+            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
               Google Reviews
             </a>
           </div>

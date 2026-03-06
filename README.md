@@ -21,6 +21,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Scroll-reveal animations** — Intersection Observer-powered directional reveals on every section with expo-out easing and stagger delays
 - **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
+- **Security-hardened** — CSP, HSTS, X-Frame-Options, Permissions-Policy headers; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
 
 ## Tech Stack
 
