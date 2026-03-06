@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.2.1] - 2026-03-05
+
+### Added
+- Documented `public/` directory structure with full asset inventory and usage notes
+- Explained Next.js static serving behavior, Webpack bypass, and image optimization guidance
+- Flagged 5 unused Create Next App starter SVGs for cleanup
+
 ## [0.2.0] - 2026-03-05
 
 ### Changed

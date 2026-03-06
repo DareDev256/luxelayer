@@ -50,10 +50,25 @@ src/
     FAQ.tsx          # Common questions
     CTA.tsx          # Final conversion block
     Footer.tsx       # Site footer
-public/
-  gallery-1.jpg      # Hero + gallery photography
-  gallery-2.jpg      # Additional project photo
+public/               # Static assets — served at site root by Next.js
+  gallery-1.jpg      # Hero background + gallery (438 KB, real project photo)
+  gallery-2.jpg      # Gallery photo (508 KB, real project photo)
+  file.svg           # ⚠️ Unused — Create Next App starter asset
+  globe.svg          # ⚠️ Unused — Create Next App starter asset
+  next.svg           # ⚠️ Unused — Create Next App starter asset
+  vercel.svg         # ⚠️ Unused — Create Next App starter asset
+  window.svg         # ⚠️ Unused — Create Next App starter asset
 ```
+
+### How `public/` Works
+
+Next.js serves everything in `public/` from the site root — `public/gallery-1.jpg` becomes `https://luxelayer.com/gallery-1.jpg`. These files:
+
+- **Bypass the Webpack pipeline** — no content hashing, no tree-shaking, no automatic optimization
+- **Are not imported in code** — referenced by URL string (`src="/gallery-1.jpg"`) rather than ES module import
+- **Should be optimized before committing** — since Next.js won't process them at build time, compress images manually (TinyPNG, `sharp`, etc.) before adding them here
+
+The two `.jpg` files are real project photographs used in the `Hero` and `Gallery` components via `next/image`, which handles responsive sizing and lazy loading at runtime. The five `.svg` files are leftover Create Next App scaffolding and can be safely removed.
 
 ## Getting Started
 
