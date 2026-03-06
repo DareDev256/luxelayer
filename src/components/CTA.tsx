@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Section from "./Section";
 import Button from "./Button";
+import { validateContactForm, type ValidationError } from "@/lib/validation";
 
 /**
  * Minimum time (ms) a human needs to fill the form. Bots submit instantly;
@@ -13,13 +14,21 @@ const MIN_SUBMIT_MS = 3000;
 
 export default function CTA() {
   const [submitted, setSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<ValidationError[]>([]);
   const loadedAt = useRef(0);
 
   // Capture mount timestamp in an effect (pure render — no Date.now in body)
   useEffect(() => { loadedAt.current = Date.now(); }, []);
 
+  /** Look up first error for a given field name */
+  const errorFor = useCallback(
+    (field: string) => fieldErrors.find((e) => e.field === field)?.message,
+    [fieldErrors],
+  );
+
   const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFieldErrors([]);
     const form = e.currentTarget;
     const data = new FormData(form);
 
@@ -29,7 +38,21 @@ export default function CTA() {
     // Timing gate — reject instant submissions (bot behavior)
     if (Date.now() - loadedAt.current < MIN_SUBMIT_MS) return;
 
-    // TODO: Wire to API route / email service. For now, show confirmation.
+    // ── Programmatic validation (mirrors future server-side checks) ──
+    const result = validateContactForm({
+      name: data.get("name"),
+      email: data.get("email"),
+      phone: data.get("phone"),
+      surface: data.get("surface"),
+      message: data.get("message"),
+    });
+
+    if (!result.valid) {
+      setFieldErrors(result.errors);
+      return;
+    }
+
+    // TODO: Wire to API route / email service. Send result.data (sanitised).
     setSubmitted(true);
   }, []);
 
@@ -64,6 +87,14 @@ export default function CTA() {
             <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
           </div>
 
+          {fieldErrors.length > 0 && (
+            <div role="alert" className="text-red-400 text-sm text-left space-y-1">
+              {fieldErrors.map((err) => (
+                <p key={err.field}>{err.message}</p>
+              ))}
+            </div>
+          )}
+
           <input
             type="text"
             name="name"
@@ -73,7 +104,9 @@ export default function CTA() {
             autoComplete="name"
             pattern="[A-Za-z\s\-'.]{1,100}"
             title="Letters, spaces, hyphens, and apostrophes only"
-            className="input-field"
+            aria-invalid={!!errorFor("name")}
+            aria-describedby={errorFor("name") ? "err-name" : undefined}
+            className={`input-field ${errorFor("name") ? "border-red-400/60" : ""}`}
           />
           <input
             type="email"
@@ -82,7 +115,9 @@ export default function CTA() {
             required
             maxLength={254}
             autoComplete="email"
-            className="input-field"
+            aria-invalid={!!errorFor("email")}
+            aria-describedby={errorFor("email") ? "err-email" : undefined}
+            className={`input-field ${errorFor("email") ? "border-red-400/60" : ""}`}
           />
           <input
             type="tel"
@@ -92,12 +127,14 @@ export default function CTA() {
             autoComplete="tel"
             pattern="[\d\s\-\+\(\)]{7,20}"
             title="Valid phone number (digits, spaces, dashes, parentheses)"
-            className="input-field"
+            aria-invalid={!!errorFor("phone")}
+            className={`input-field ${errorFor("phone") ? "border-red-400/60" : ""}`}
           />
           <select
             name="surface"
             required
-            className="input-field text-warm-gray/50"
+            aria-invalid={!!errorFor("surface")}
+            className={`input-field text-warm-gray/50 ${errorFor("surface") ? "border-red-400/60" : ""}`}
           >
             <option value="">Surface Type</option>
             <option value="marble">Marble</option>

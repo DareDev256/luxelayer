@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.14.2] - 2026-03-06
+
+### Security
+- **Isomorphic contact form validation** — Created `src/lib/validation.ts` with programmatic validation that runs identically on client and (future) server. HTML5 `pattern`/`required` attributes are browser-only and trivially bypassed; this module provides defence-in-depth with input sanitisation (control char stripping, whitespace trimming, length capping), regex validation for name/email/phone, and a strict allowlist for the surface `<select>` field — preventing injection payloads from riding in on supposedly-constrained inputs
+- **CTA form hardened** — `handleSubmit` now runs `validateContactForm()` before any state transition, rejecting invalid data with per-field error messages. Invalid fields get `aria-invalid` + red border; a `role="alert"` summary announces errors to screen readers. The sanitised `result.data` object (not raw FormData) is what the future API route will consume
+- **19 validation tests** — Covers happy path, XSS probes (`<script>` in name), email header injection (`<>` in email), SQL injection in surface field, control character stripping, non-string input coercion, oversized payload truncation, multi-error accumulation, and every allowlisted surface value. Total suite: 95 tests passing
+
 ## [0.14.1] - 2026-03-06
 
 ### Fixed
