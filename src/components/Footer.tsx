@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/5 py-12 px-6">
@@ -5,7 +9,12 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="md:col-span-2">
-            <a href="#" className="text-2xl font-bold tracking-tight">
+            <a
+              href="#"
+              onClick={(e: React.MouseEvent) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="text-2xl font-bold tracking-tight"
+              aria-label="Scroll to top"
+            >
               <span className="text-gradient-gold">Luxe</span>
               <span className="text-white">Layer</span>
             </a>
@@ -83,15 +92,15 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} LuxeLayer. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-warm-gray/30 text-xs">
-            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
+            <span className="cursor-default" title="Coming soon">
               Instagram
-            </a>
-            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
+            </span>
+            <span className="cursor-default" title="Coming soon">
               Facebook
-            </a>
-            <a href="#" className="hover:text-gold transition-colors" rel="noopener noreferrer" target="_blank">
+            </span>
+            <span className="cursor-default" title="Coming soon">
               Google Reviews
-            </a>
+            </span>
           </div>
         </div>
       </div>

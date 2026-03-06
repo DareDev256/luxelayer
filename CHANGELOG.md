@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.9.4] - 2026-03-06
+
+### Fixed
+- **Broken logo links** — Header and Footer logo `href="#"` caused a jarring jump to `#` hash. Replaced with smooth `scrollTo({ top: 0, behavior: "smooth" })` with `aria-label="Scroll to top"` for accessibility
+- **Broken social links in Footer** — Instagram, Facebook, and Google Reviews links used `href="#"` with `target="_blank"`, opening a useless blank tab. Replaced with inert `<span>` elements with "Coming soon" tooltip until real URLs are available. Removes misleading `rel="noopener noreferrer"` on dead links
+
 ## [0.9.3] - 2026-03-06
 
 ### Fixed
