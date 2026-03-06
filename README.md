@@ -13,7 +13,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 ## Features
 
 - **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Surface Finder, Gallery, Testimonials, FAQ, and CTA sections
-- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA. Architecture: `SurfaceFinder` orchestrates rotation state and mode selection; `SurfacePills` renders the pill selector bar with per-pill progress indicators; `SurfaceDetail` handles the result panel with CSS grid-row animation for smooth expand *and* collapse; `RotationIndicator` shows the SVG progress ring with risk-colored queue dots and pause/play toggle. **Two rotation modes**: *Auto* cycles via greedy diversity interleaving; *Diverse* uses a greedy set-cover algorithm scoring candidates across risk level and material type (natural vs engineered) with marginal diversity bonuses (+25 risk, +15 material). Both modes feature 2x dwell for high-risk surfaces, automatic pause-on-selection with instant resume-on-deselect, mode-switch cycle reset, and 6s auto-resume fallback
+- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA. Architecture: `SurfaceFinder` orchestrates rotation state and mode selection; `SurfacePills` renders the pill selector bar with per-pill progress indicators; `SurfaceDetail` handles the result panel with CSS grid-row animation for smooth expand *and* collapse; `RotationIndicator` shows the SVG progress ring with risk-colored queue dots and pause/play toggle. **Two rotation modes**: *Auto* cycles via greedy diversity interleaving; *Diverse* uses a greedy set-cover algorithm scoring candidates across risk level and material type (natural vs engineered) with marginal diversity bonuses (+25 risk, +15 material). Both modes feature 2x dwell for high-risk surfaces, automatic pause-on-selection with instant resume-on-deselect, automatic cycle reset on schedule identity change (handles same-length different-order schedules), and 6s auto-resume fallback
 - **Real photography** — Actual project photos of exotic granite countertops, no stock imagery. Gallery captions are always visible on touch devices (mobile-first), hover overlay on desktop
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
@@ -49,7 +49,7 @@ src/
   hooks/
     useActiveSection.ts  # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts   # Intersection Observer hook for scroll-triggered visibility
-    useRotationCycle.ts  # Timer-driven auto-rotation hook (bridges autoSelect to React state)
+    useRotationCycle.ts  # Timer-driven auto-rotation hook with schedule-identity auto-reset (bridges autoSelect to React state)
   data/
     surfaces.ts          # Surface profile data, types (SurfaceProfile, SurfaceScheduleEntry), dwell config, criticality predicate
   utils/

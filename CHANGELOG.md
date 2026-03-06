@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.14.1] - 2026-03-06
+
+### Fixed
+- **Schedule-identity auto-reset** — `useRotationCycle` now derives a content-based identity key from schedule offsets/dwells and auto-resets elapsed, playing, and resume timers when the schedule changes. Previously the hook only depended on `schedule.length`, so switching between rotation modes that produce same-length but differently-ordered schedules would keep the elapsed timer running against stale offsets until the manual `reset()` call executed one frame later
+- **Side effects extracted from state updater** — `rotation.pause()` and `rotation.resume()` were called inside `setSelected`'s functional updater in SurfaceFinder. React state updaters must be pure; side effects during concurrent mode replays would fire multiple times. Moved pause/resume into a dedicated `useEffect` keyed on `selected`
+- **Stable `handleSelect` callback** — Destructured stable `pause`/`resume` callbacks from `useRotationCycle` instead of capturing the entire `rotation` object (new identity every render) in `useCallback` dependencies. Eliminates unnecessary re-renders of `SurfacePills` on every tick
+
 ## [0.14.0] - 2026-03-06
 
 ### Changed

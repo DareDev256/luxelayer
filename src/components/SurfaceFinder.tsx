@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 import SurfacePills from "./SurfacePills";
@@ -34,8 +34,8 @@ export default function SurfaceFinder() {
     return computeRotationSchedule(profiles, order, BASE_DWELL_MS, isCriticalSurface);
   }, [mode]);
 
-  const rotation = useRotationCycle(schedule);
-  const autoProfile = rotation.active?.item ?? null;
+  const { active, progress, playing, pause, resume } = useRotationCycle(schedule);
+  const autoProfile = active?.item ?? null;
 
   // Manual selection overrides auto-rotation
   const profile = selected !== null ? profiles[selected] : autoProfile;
@@ -47,17 +47,17 @@ export default function SurfaceFinder() {
 
   const handleSelect = useCallback((i: number) => {
     setSelected((prev) => {
-      if (prev === i) {
-        // Deselecting — resume auto-rotation immediately
-        rotation.resume();
-        return null;
-      }
-      // Selecting — pause auto-rotation
-      rotation.pause();
+      if (prev === i) return null;          // deselect
       setLastSelected(i);
       return i;
     });
-  }, [rotation]);
+  }, []);
+
+  // Side effects live outside the state updater — fires after selection state settles
+  useEffect(() => {
+    if (selected === null) resume();        // deselected → resume auto-rotation
+    else pause();                           // pinned → pause
+  }, [selected, pause, resume]);
 
   return (
     <Section id="surface-finder" variant="muted" maxWidth="4xl">
@@ -74,7 +74,7 @@ export default function SurfaceFinder() {
             key={m}
             role="radio"
             aria-checked={mode === m}
-            onClick={() => { setMode(m); setSelected(null); rotation.reset(); }}
+            onClick={() => { setMode(m); setSelected(null); }}
             className={`
               px-4 py-1.5 text-xs font-semibold uppercase tracking-widest transition-all duration-200
               first:rounded-l last:rounded-r border
@@ -94,7 +94,7 @@ export default function SurfaceFinder() {
         profiles={profiles}
         activeIndex={activeIndex}
         selected={selected}
-        progress={rotation.progress}
+        progress={progress}
         onSelect={handleSelect}
       />
 
@@ -102,10 +102,10 @@ export default function SurfaceFinder() {
       {selected === null && (
         <RotationIndicator
           schedule={schedule}
-          active={rotation.active}
-          progress={rotation.progress}
-          playing={rotation.playing}
-          onToggle={rotation.playing ? rotation.pause : rotation.resume}
+          active={active}
+          progress={progress}
+          playing={playing}
+          onToggle={playing ? pause : resume}
         />
       )}
 
