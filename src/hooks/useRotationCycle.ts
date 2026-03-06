@@ -34,30 +34,33 @@ export function useRotationCycle<T>(
   const [playing, setPlaying] = useState(true);
   const resumeTimer = useRef<ReturnType<typeof setTimeout>>(null);
 
-  // Tick the elapsed counter
+  const clearResumeTimer = useCallback(() => {
+    if (resumeTimer.current) {
+      clearTimeout(resumeTimer.current);
+      resumeTimer.current = null;
+    }
+  }, []);
+
+  // Tick the elapsed counter — cleanup clears both interval and pending resume
   useEffect(() => {
     if (!playing || schedule.length === 0) return;
     const id = setInterval(() => setElapsed((e) => e + tickMs), tickMs);
-    return () => clearInterval(id);
-  }, [playing, tickMs, schedule.length]);
+    return () => {
+      clearInterval(id);
+      clearResumeTimer();
+    };
+  }, [playing, tickMs, schedule.length, clearResumeTimer]);
 
   const pause = useCallback(() => {
     setPlaying(false);
-    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    clearResumeTimer();
     resumeTimer.current = setTimeout(() => setPlaying(true), resumeDelay);
-  }, [resumeDelay]);
+  }, [resumeDelay, clearResumeTimer]);
 
   const resume = useCallback(() => {
-    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    clearResumeTimer();
     setPlaying(true);
-  }, []);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (resumeTimer.current) clearTimeout(resumeTimer.current);
-    };
-  }, []);
+  }, [clearResumeTimer]);
 
   return {
     active: activeEntryAt(schedule, elapsed),

@@ -2,6 +2,15 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.13.0] - 2026-03-06
+
+### Changed
+- **Surface data extraction** — Moved all 6 surface profile definitions, `SurfaceProfile` type, `MaterialType`, `BASE_DWELL_MS`, and `isCriticalSurface` predicate into dedicated `src/data/surfaces.ts` module. SurfaceFinder is now a pure rendering consumer with zero data ownership
+- **Shared `SurfaceScheduleEntry` type** — Replaced verbose inline `ScheduleEntry<{ name: string; riskLevel: string; riskColor: string }>` in RotationIndicator props with a single type alias exported from the data module. Eliminates duplicated type knowledge between components
+- **Derived `hasProfile` boolean** — Replaced 5 repeated `profile || autoProfile` expressions in SurfaceFinder with a single derived variable, reducing conditional noise and preventing logic drift between instances
+- **Memoized `handleSelect`** — Wrapped pill selection handler in `useCallback` with functional `setSelected` updater, eliminating re-creation on every selection change across 6 pill buttons
+- **Consolidated timer cleanup** — Extracted `clearResumeTimer` callback in `useRotationCycle`, merged the standalone unmount-cleanup effect into the interval effect's teardown. One cleanup path instead of two
+
 ## [0.12.0] - 2026-03-06
 
 ### Changed

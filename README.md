@@ -50,6 +50,8 @@ src/
     useActiveSection.ts  # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts   # Intersection Observer hook for scroll-triggered visibility
     useRotationCycle.ts  # Timer-driven auto-rotation hook (bridges autoSelect to React state)
+  data/
+    surfaces.ts          # Surface profile data, types (SurfaceProfile, SurfaceScheduleEntry), dwell config, criticality predicate
   utils/
     autoSelect.ts        # Pure rotation engine — diversityPick, diverseScorePick (greedy set-cover), schedule computation, cycle math
   components/

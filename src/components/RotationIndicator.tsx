@@ -1,10 +1,10 @@
 "use client";
 
-import type { ScheduleEntry } from "@/utils/autoSelect";
+import type { SurfaceScheduleEntry } from "@/data/surfaces";
 
 interface RotationIndicatorProps {
-  schedule: ScheduleEntry<{ name: string; riskLevel: string; riskColor: string }>[];
-  active: ScheduleEntry<{ name: string; riskLevel: string; riskColor: string }> | null;
+  schedule: SurfaceScheduleEntry[];
+  active: SurfaceScheduleEntry | null;
   progress: number;
   playing: boolean;
   onToggle: () => void;
