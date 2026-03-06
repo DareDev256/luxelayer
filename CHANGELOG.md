@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.9.2] - 2026-03-06
+
+### Added
+- **15 new diversity-pick edge case tests** — single-item input, single-category degeneration (all items share one severity), uneven bucket interleaving (5:1 ratio), equal-size category alternation, determinism verification, many-unique-categories, exact ms boundary transitions between schedule entries, boundary walk across all entries, large negative elapsed wrapping, negative cycle index, full pipeline reachability (diversityPick -> schedule -> activeEntryAt), schedule-order preservation, and cycleProgress clamping at cycle end. Total test count: 52, all passing, lint clean
+
 ## [0.9.1] - 2026-03-06
 
 ### Added

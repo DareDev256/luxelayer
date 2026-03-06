@@ -24,7 +24,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Keyboard-accessible mobile menu** — Escape key dismisses the hamburger menu with focus return to the trigger button (WCAG 2.1 SC 2.4.3)
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 - **Security-hardened** — Nonce-based CSP via middleware (no `unsafe-inline`/`unsafe-eval` for scripts), HSTS with preload, X-Frame-Options DENY, COOP same-origin, Permissions-Policy, upgrade-insecure-requests; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
-- **37 component tests** — Vitest + Testing Library covering Icon rendering, SurfaceFinder interactions (selection, toggle, auto-rotation, ARIA radiogroup), FAQ accordion behavior, and 17 pure-function auto-select tests (diversity ordering, schedule computation, cycle progress, boundary wrapping, negative elapsed)
+- **52 component tests** — Vitest + Testing Library covering Icon rendering, SurfaceFinder interactions (selection, toggle, auto-rotation, ARIA radiogroup), FAQ accordion behavior, and 32 pure-function auto-select tests (diversity ordering, single-category degeneration, uneven bucket interleaving, exact boundary transitions, pipeline integration, schedule computation, cycle progress, boundary wrapping, negative elapsed)
 
 ## Tech Stack
 
