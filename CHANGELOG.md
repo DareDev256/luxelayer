@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.6.0] - 2026-03-06
+
+### Changed
+- Extracted shared `Icon` component — single source of truth for 9 SVG icons used across 6 components, eliminating ~80 lines of duplicated SVG markup
+- Refactored `Problem` data array from inline JSX icons to `IconName` string references — separates data from presentation, makes the array serializable and testable
+- Consolidated 4 Hero animation delay classes (`animate-fade-in-up`, `-delay-1`, `-delay-2`, `-delay-3`) into a single class using a `--delay` CSS custom property — stagger timing now set via inline style instead of class proliferation
+- All icons render with `aria-hidden="true"` by default via the `Icon` component — decorative icons no longer need per-instance ARIA attributes
+
 ## [0.5.2] - 2026-03-06
 
 ### Security

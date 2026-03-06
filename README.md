@@ -46,6 +46,7 @@ src/
     useActiveSection.ts # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts  # Intersection Observer hook for scroll-triggered visibility
   components/
+    Icon.tsx         # Shared SVG icon library (9 icons, single source of truth)
     SectionHeader.tsx # Shared gold-label/h2/description header — single source of truth
     ScrollReveal.tsx  # Directional reveal wrapper with stagger support
     Header.tsx        # Sticky nav
@@ -134,6 +135,8 @@ Two hooks, same API, different jobs:
 `useActiveSection` uses asymmetric `rootMargin: "-10% 0px -50% 0px"` to bias detection toward the top 40% of the viewport — where the eye naturally rests during scroll. `useScrollReveal` uses `-40px` bottom margin to trigger slightly before the element fully enters.
 
 ### Reusable Components
+
+**`Icon`** — Typed SVG icon library with 9 icons (`star`, `shield`, `bolt`, `check`, `alert`, `beaker`, `dollar`, `chevron-down`, `image`). Accepts `name`, `className`, and `strokeWidth`. Renders with `aria-hidden="true"` by default. Automatically handles filled vs. stroked rendering based on the icon type.
 
 **`SectionHeader`** — Extracted from 7 section components. Accepts `label` (gold uppercase tag), `title` (h2), and optional `description`. Conditionally removes bottom margin on `h2` when no description follows.
 

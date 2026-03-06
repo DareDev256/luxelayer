@@ -1,3 +1,4 @@
+import Icon from "./Icon";
 import SectionHeader from "./SectionHeader";
 
 const services = [
@@ -72,19 +73,7 @@ export default function Services() {
                     key={feature}
                     className="flex items-center gap-3 text-warm-gray/70 text-sm"
                   >
-                    <svg
-                      className="w-4 h-4 text-gold shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+                    <Icon name="check" className="w-4 h-4 text-gold shrink-0" />
                     {feature}
                   </li>
                 ))}

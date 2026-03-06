@@ -56,21 +56,13 @@ html {
   }
 }
 
+/**
+ * Staggered fade-in animation — uses CSS custom property --delay
+ * so a single class handles all stagger timings. Set --delay via
+ * inline style: style={{ '--delay': '0.2s' } as CSSProperties}
+ */
 .animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.animate-fade-in-up-delay-1 {
-  animation: fadeInUp 0.8s ease-out 0.2s forwards;
-  opacity: 0;
-}
-
-.animate-fade-in-up-delay-2 {
-  animation: fadeInUp 0.8s ease-out 0.4s forwards;
-  opacity: 0;
-}
-
-.animate-fade-in-up-delay-3 {
-  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+  --delay: 0s;
+  animation: fadeInUp 0.8s ease-out var(--delay) forwards;
   opacity: 0;
 }

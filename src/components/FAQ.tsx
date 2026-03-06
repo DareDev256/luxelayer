@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Icon from "./Icon";
 import SectionHeader from "./SectionHeader";
 
 const faqs = [
@@ -74,22 +75,12 @@ export default function FAQ() {
                   onClick={() => setOpenIndex(isOpen ? null : index)}
                 >
                   <span className="font-medium pr-4">{faq.question}</span>
-                  <svg
+                  <Icon
+                    name="chevron-down"
                     className={`w-5 h-5 text-gold shrink-0 transition-transform duration-200 ${
                       isOpen ? "rotate-180" : ""
                     }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                  />
                 </button>
                 <div
                   id={panelId}
