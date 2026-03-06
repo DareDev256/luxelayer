@@ -29,7 +29,10 @@ export function diverseScorePick<T>(
 ): number[] {
   if (items.length === 0) return [];
 
-  const bons = bonuses ?? dimensions.map(() => 25);
+  // Pad/clamp bonuses to match dimensions — prevents NaN scores when
+  // callers pass a shorter array (previously caused an infinite loop).
+  const raw = bonuses ?? [];
+  const bons = dimensions.map((_, d) => raw[d] ?? 25);
   const seen: Set<string>[] = dimensions.map(() => new Set());
   const remaining = new Set(items.map((_, i) => i));
   const result: number[] = [];

@@ -327,15 +327,26 @@ describe("diverseScorePick — edge cases", () => {
     expect(order).toEqual([0, 1, 2, 3, 4]);
   });
 
-  it("bonuses array shorter than dimensions crashes — documents unguarded edge case", () => {
+  it("bonuses array shorter than dimensions pads missing entries with default 25", () => {
     const items = [
       { a: "X", b: "1" },
       { a: "Y", b: "2" },
     ];
-    // bonuses[1] is undefined → score becomes NaN → bestIdx stays -1 → items[-1] throws
-    expect(() =>
-      diverseScorePick(items, [(i) => i.a, (i) => i.b], [10]),
-    ).toThrow();
+    // bonuses[1] was undefined → previously caused NaN scores and infinite loop.
+    // Now pads missing entries with default bonus (25).
+    const order = diverseScorePick(items, [(i) => i.a, (i) => i.b], [10]);
+    expect(order).toHaveLength(2);
+    expect(new Set(order).size).toBe(2);
+  });
+
+  it("empty bonuses array falls back to all-default bonuses", () => {
+    const items = [
+      { a: "X", b: "1" },
+      { a: "Y", b: "2" },
+    ];
+    const withEmpty = diverseScorePick(items, [(i) => i.a, (i) => i.b], []);
+    const withDefault = diverseScorePick(items, [(i) => i.a, (i) => i.b]);
+    expect(withEmpty).toEqual(withDefault);
   });
 
   it("three dimensions — covers all values greedily", () => {

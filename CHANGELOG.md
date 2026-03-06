@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.14.4] - 2026-03-06
+
+### Fixed
+- **`diverseScorePick` infinite loop on short bonuses array** — When `bonuses` had fewer entries than `dimensions`, missing indices resolved to `undefined`, poisoning scores with `NaN`. Since `NaN > -Infinity` is `false`, `bestIdx` stayed `-1` and `remaining.delete(-1)` was a no-op, creating an infinite loop. Now pads the bonuses array to match dimensions length using the default bonus value (25). Updated the existing crash-documenting test to verify graceful handling, added a new test for empty bonuses fallback. 96 tests passing
+
 ## [0.14.3] - 2026-03-06
 
 ### Fixed
