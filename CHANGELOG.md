@@ -2,6 +2,18 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.8.3] - 2026-03-06
+
+### Security
+- **Nonce-based CSP via middleware** — replaced static `script-src 'self' 'unsafe-inline' 'unsafe-eval'` with per-request nonce generation (`src/middleware.ts`). Every response gets a unique cryptographic nonce; only scripts carrying the token execute. Eliminates the two most exploitable CSP bypasses (OWASP A03: Injection)
+- **Removed `'unsafe-eval'` from CSP** — no code in the bundle uses `eval()` or `new Function()`, so this was an unnecessary XSS attack surface
+- **Disabled `X-XSS-Protection`** (set to `0`) — the legacy `1; mode=block` value can be weaponized in older browsers to selectively block legitimate scripts; CSP nonce handles XSS prevention now
+- **Added `Cross-Origin-Opener-Policy: same-origin`** — prevents cross-origin windows from retaining `window.opener` references (Spectre-class side-channel mitigation)
+- **Added `X-DNS-Prefetch-Control: off`** — prevents DNS prefetch from leaking which external domains are referenced in the page
+- **Added `object-src 'none'` and `worker-src 'none'` to CSP** — explicitly blocks plugin and worker execution vectors
+- **Added `upgrade-insecure-requests` to CSP** — forces all subresource requests to HTTPS
+- **Replaced deprecated `interest-cohort=()` with `browsing-topics=()`** in Permissions-Policy — FLoC is dead, Topics API is the current opt-out
+
 ## [0.8.2] - 2026-03-06
 
 ### Fixed

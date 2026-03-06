@@ -23,7 +23,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
 - **Keyboard-accessible mobile menu** — Escape key dismisses the hamburger menu with focus return to the trigger button (WCAG 2.1 SC 2.4.3)
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
-- **Security-hardened** — CSP, HSTS, X-Frame-Options, Permissions-Policy headers; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
+- **Security-hardened** — Nonce-based CSP via middleware (no `unsafe-inline`/`unsafe-eval` for scripts), HSTS with preload, X-Frame-Options DENY, COOP same-origin, Permissions-Policy, upgrade-insecure-requests; form input validation with pattern constraints and length caps; external link safety via `rel="noopener noreferrer"`
 - **20 component tests** — Vitest + Testing Library covering Icon rendering (filled/outlined viewBox logic, accessibility), SurfaceFinder interactions (selection, toggle, surface switching, ARIA radiogroup contract), and FAQ accordion behavior (expand/collapse, single-open constraint, aria-controls/labelledby wiring)
 
 ## Tech Stack
