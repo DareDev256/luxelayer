@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.3.0] - 2026-03-05
+
+### Added
+- `useScrollReveal` hook — Intersection Observer-based visibility tracker for scroll-triggered animations
+- `ScrollReveal` component — directional reveal wrapper (up/left/right/fade) with stagger delays and expo-out easing
+- All below-the-fold sections now animate into view on scroll with varied directions and timing
+- `will-change` lifecycle management — applies compositor hints pre-animation, removes post-animation to prevent layer bloat
+
 ## [0.2.1] - 2026-03-05
 
 ### Added

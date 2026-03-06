@@ -17,7 +17,8 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
 - **SEO-optimized** — Open Graph metadata, semantic HTML, keyword-rich content
-- **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle
+- **Scroll-reveal animations** — Intersection Observer-powered directional reveals on every section with expo-out easing and stagger delays
+- **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 
 ## Tech Stack
 
@@ -38,7 +39,10 @@ src/
     layout.tsx       # Root layout, metadata, font config
     page.tsx         # Landing page composition
     globals.css      # Tailwind directives, custom properties
+  hooks/
+    useScrollReveal.ts # Intersection Observer hook for scroll-triggered visibility
   components/
+    ScrollReveal.tsx # Directional reveal wrapper with stagger support
     Header.tsx       # Sticky nav
     Hero.tsx         # Full-bleed hero with real photography
     Problem.tsx      # Pain points section
