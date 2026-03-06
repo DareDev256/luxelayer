@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
+import Button from "./Button";
 import Icon from "./Icon";
 
 /** Inline style to set the stagger delay CSS custom property. */
@@ -46,18 +47,12 @@ export default function Hero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up"
           style={stagger(0.6)}
         >
-          <a
-            href="#contact"
-            className="bg-gold text-charcoal font-semibold px-8 py-3.5 rounded text-lg hover:bg-gold-light transition-colors duration-200 w-full sm:w-auto"
-          >
+          <Button href="#contact" size="lg" className="w-full sm:w-auto">
             Book a Consultation
-          </a>
-          <a
-            href="#how-it-works"
-            className="border border-white/20 text-warm-gray px-8 py-3.5 rounded text-lg hover:border-gold/50 hover:text-gold transition-colors duration-200 w-full sm:w-auto"
-          >
+          </Button>
+          <Button href="#how-it-works" variant="ghost" size="lg" className="w-full sm:w-auto">
             See How It Works
-          </a>
+          </Button>
         </div>
 
         {/* Trust signals */}

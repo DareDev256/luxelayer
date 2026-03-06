@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Button from "./Button";
 import Icon from "./Icon";
 import Section from "./Section";
 import SectionHeader from "./SectionHeader";
@@ -245,14 +246,14 @@ export default function SurfaceFinder() {
               <div>
                 <h4 className="text-xs uppercase tracking-wider text-warm-gray/30 mb-3 font-semibold">LuxeLayer Solution</h4>
                 <p className="text-sm text-warm-gray/70 leading-relaxed mb-5">{display.protection}</p>
-                <a
+                <Button
                   href="#contact"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-charcoal bg-gold px-5 py-2.5 rounded hover:bg-gold-light transition-colors duration-200"
+                  size="md"
                   tabIndex={profile || autoProfile ? 0 : -1}
                 >
                   Get a Quote
                   <Icon name="bolt" className="w-3.5 h-3.5" />
-                </a>
+                </Button>
               </div>
             </div>
           </div>

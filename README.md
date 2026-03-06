@@ -57,6 +57,7 @@ src/
     Icon.tsx         # Shared SVG icon library (9 icons, single source of truth)
     SectionHeader.tsx # Shared gold-label/h2/description header — single source of truth
     ScrollReveal.tsx  # Directional reveal wrapper with stagger support
+    Button.tsx        # Polymorphic CTA button (primary/ghost, sm/md/lg, <a> or <button>)
     Header.tsx        # Sticky nav
     Hero.tsx         # Full-bleed hero with real photography
     Problem.tsx      # Pain points section

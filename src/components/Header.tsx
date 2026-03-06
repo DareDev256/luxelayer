@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import Button from "./Button";
 
 /** Nav link config — `id` must match the target section's `id` attribute for IO tracking. */
 const navLinks = [
@@ -81,12 +82,9 @@ export default function Header() {
               </a>
             );
           })}
-          <a
-            href="#contact"
-            className="text-sm bg-gold text-charcoal font-semibold px-5 py-2 rounded hover:bg-gold-light transition-colors duration-200"
-          >
+          <Button href="#contact" size="sm">
             Get a Quote
-          </a>
+          </Button>
         </nav>
 
         {/* Mobile hamburger */}
@@ -156,13 +154,9 @@ export default function Header() {
               </a>
             );
           })}
-          <a
-            href="#contact"
-            className="bg-gold text-charcoal font-semibold px-5 py-2 rounded text-center hover:bg-gold-light transition-colors"
-            onClick={closeMenu}
-          >
+          <Button href="#contact" size="sm" className="text-center" onClick={closeMenu}>
             Get a Quote
-          </a>
+          </Button>
         </nav>
       )}
     </header>

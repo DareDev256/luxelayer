@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Section from "./Section";
+import Button from "./Button";
 
 /**
  * Minimum time (ms) a human needs to fill the form. Bots submit instantly;
@@ -114,12 +115,9 @@ export default function CTA() {
             maxLength={1000}
             className="input-field resize-none"
           />
-          <button
-            type="submit"
-            className="w-full bg-gold text-charcoal font-semibold py-3.5 rounded text-lg hover:bg-gold-light transition-colors duration-200"
-          >
+          <Button type="submit" size="lg" fullWidth>
             Request Free Quote
-          </button>
+          </Button>
         </form>
         )}
 

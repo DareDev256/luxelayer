@@ -2,6 +2,15 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.12.0] - 2026-03-06
+
+### Changed
+- **Reusable Button component** — Extracted repeated CTA button styling into a polymorphic `src/components/Button.tsx` with `primary`/`ghost` variants, `sm`/`md`/`lg` sizes, and automatic `<a>`/`<button>` element selection based on `href` prop. Replaces 5 duplicated class strings across Header, Hero, CTA, and SurfaceFinder with a single source of truth
+- **Header** — Desktop and mobile "Get a Quote" links now use `<Button>` instead of raw `<a>` tags with inline classes
+- **Hero** — Both CTA buttons ("Book a Consultation" primary, "See How It Works" ghost) refactored to `<Button>`
+- **CTA** — Form submit button refactored to `<Button>` with `fullWidth` prop
+- **SurfaceFinder** — Inline "Get a Quote" link refactored to `<Button>`
+
 ## [0.11.0] - 2026-03-06
 
 ### Added
