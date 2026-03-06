@@ -9,6 +9,13 @@ import { useState, useEffect, useRef } from "react";
  * when scrolling a landing page.
  *
  * Returns the `id` attribute of the most-visible observed section.
+ *
+ * Race-condition guard: the `ratios` Map is cleared on every effect
+ * cleanup so stale entries from a previous observer never bleed into
+ * the next. The comparison loop is also scoped to `trackedIds` rather
+ * than the full Map — fast-scroll scenarios where IO batches miss
+ * intermediate thresholds can leave orphaned entries that would
+ * otherwise win the "best ratio" comparison.
  */
 export function useActiveSection(sectionIds: string[]): string | null {
   const [active, setActive] = useState<string | null>(null);
@@ -21,6 +28,13 @@ export function useActiveSection(sectionIds: string[]): string | null {
 
     if (elements.length === 0) return;
 
+    // Snapshot the tracked set so the callback closure only considers
+    // IDs from this effect cycle — prevents stale-entry races.
+    const trackedIds = new Set(sectionIds);
+
+    // Clear any leftover ratios from the previous observer cycle.
+    ratios.current.clear();
+
     // Observe with multiple thresholds for granular ratio tracking.
     // rootMargin: shrink the effective viewport to the top 40% of the screen
     // so the "active" section flips earlier — feels more natural when scrolling down.
@@ -30,10 +44,12 @@ export function useActiveSection(sectionIds: string[]): string | null {
           ratios.current.set(entry.target.id, entry.intersectionRatio);
         }
 
-        // Pick the section with the highest intersection ratio
+        // Pick the section with the highest intersection ratio —
+        // only consider IDs from the current tracked set.
         let best: string | null = null;
         let bestRatio = 0;
-        for (const [id, ratio] of ratios.current) {
+        for (const id of trackedIds) {
+          const ratio = ratios.current.get(id) ?? 0;
           if (ratio > bestRatio) {
             bestRatio = ratio;
             best = id;
@@ -52,7 +68,11 @@ export function useActiveSection(sectionIds: string[]): string | null {
 
     for (const el of elements) observer.observe(el);
 
-    return () => observer.disconnect();
+    const ratioMap = ratios.current;
+    return () => {
+      observer.disconnect();
+      ratioMap.clear();
+    };
   }, [sectionIds]);
 
   return active;

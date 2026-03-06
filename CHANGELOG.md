@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.7.1] - 2026-03-06
+
+### Fixed
+- Race condition in `useActiveSection` — the `ratios` Map ref was never cleared on effect cleanup, allowing stale IntersectionObserver entries from previous observer cycles to persist and win the "best ratio" comparison when `sectionIds` identity changed or during React strict-mode double-invocations
+- Comparison loop now scoped to a `trackedIds` Set snapshot instead of iterating the full Map — prevents orphaned entries from fast-scroll IO batch misses from selecting an off-screen section as active
+
 ## [0.7.0] - 2026-03-06
 
 ### Added
