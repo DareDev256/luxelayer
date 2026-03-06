@@ -1,3 +1,5 @@
+import SectionHeader from "./SectionHeader";
+
 const surfaces = [
   {
     name: "Marble",
@@ -35,18 +37,11 @@ export default function SurfaceTypes() {
   return (
     <section id="surfaces" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            We Protect
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Every Premium Surface
-          </h2>
-          <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Our protection film is engineered for the unique challenges of each material.
-            Tailored protection for every surface type.
-          </p>
-        </div>
+        <SectionHeader
+          label="We Protect"
+          title="Every Premium Surface"
+          description="Our protection film is engineered for the unique challenges of each material. Tailored protection for every surface type."
+        />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {surfaces.map((surface) => (

@@ -19,6 +19,7 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 - **SEO-optimized** — Open Graph metadata, semantic HTML, keyword-rich content
 - **Active section tracking** — Navigation highlights the current section with a sliding gold underline (desktop) or scaling dot (mobile) using Intersection Observer ratio comparison
 - **Scroll-reveal animations** — Intersection Observer-powered directional reveals on every section with expo-out easing and stagger delays
+- **Accessible FAQ accordion** — ARIA-compliant expand/collapse with `aria-expanded`, `aria-controls`, `role="region"`, and CSS grid-based height animation
 - **Performance-first** — Next.js Image optimization, priority loading on hero, minimal JS bundle, IO-based animations (off main thread)
 
 ## Tech Stack
@@ -44,8 +45,9 @@ src/
     useActiveSection.ts # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts  # Intersection Observer hook for scroll-triggered visibility
   components/
-    ScrollReveal.tsx # Directional reveal wrapper with stagger support
-    Header.tsx       # Sticky nav
+    SectionHeader.tsx # Shared gold-label/h2/description header — single source of truth
+    ScrollReveal.tsx  # Directional reveal wrapper with stagger support
+    Header.tsx        # Sticky nav
     Hero.tsx         # Full-bleed hero with real photography
     Problem.tsx      # Pain points section
     Services.tsx     # Three service tiers with feature lists

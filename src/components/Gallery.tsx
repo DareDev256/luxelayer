@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionHeader from "./SectionHeader";
 
 const galleryItems = [
   {
@@ -39,18 +40,11 @@ export default function Gallery() {
   return (
     <section id="gallery" className="py-24 px-6 bg-charcoal">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            Our Work
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            See the Invisible Difference
-          </h2>
-          <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Real projects, real protection. Every surface looks exactly the same
-            — because the best protection is the kind you can&apos;t see.
-          </p>
-        </div>
+        <SectionHeader
+          label="Our Work"
+          title="See the Invisible Difference"
+          description="Real projects, real protection. Every surface looks exactly the same — because the best protection is the kind you can't see."
+        />
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {galleryItems.map((item) => (

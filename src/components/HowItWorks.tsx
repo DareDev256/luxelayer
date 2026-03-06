@@ -1,3 +1,5 @@
+import SectionHeader from "./SectionHeader";
+
 const steps = [
   {
     number: "01",
@@ -29,18 +31,11 @@ export default function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 px-6 bg-charcoal">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            The Process
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            How It Works
-          </h2>
-          <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            From consultation to completion, your surfaces are protected in as
-            little as one day.
-          </p>
-        </div>
+        <SectionHeader
+          label="The Process"
+          title="How It Works"
+          description="From consultation to completion, your surfaces are protected in as little as one day."
+        />
 
         <div className="grid md:grid-cols-4 gap-8">
           {steps.map((step, index) => (

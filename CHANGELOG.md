@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.5.0] - 2026-03-06
+
+### Changed
+- Extracted `SectionHeader` component — deduplicated the gold-label/h2/description header pattern from 7 section components into a single source of truth
+- Refactored FAQ accordion with proper ARIA attributes (`aria-expanded`, `aria-controls`, `role="region"`, `aria-labelledby`) for WCAG 2.1 compliance
+- Replaced FAQ conditional rendering with CSS grid height animation (`grid-template-rows: 0fr/1fr`) for smooth expand/collapse transitions
+- Decorative SVG chevron in FAQ now marked `aria-hidden="true"` to prevent screen reader noise
+
 ## [0.4.0] - 2026-03-06
 
 ### Added

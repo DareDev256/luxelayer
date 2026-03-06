@@ -1,3 +1,5 @@
+import SectionHeader from "./SectionHeader";
+
 const testimonials = [
   {
     quote:
@@ -26,14 +28,10 @@ export default function Testimonials() {
   return (
     <section className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            Testimonials
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Trusted by Homeowners & Businesses
-          </h2>
-        </div>
+        <SectionHeader
+          label="Testimonials"
+          title="Trusted by Homeowners & Businesses"
+        />
 
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial) => (

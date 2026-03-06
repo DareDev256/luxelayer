@@ -1,3 +1,5 @@
+import SectionHeader from "./SectionHeader";
+
 const problems = [
   {
     icon: (
@@ -35,18 +37,11 @@ export default function Problem() {
   return (
     <section className="py-24 px-6 bg-charcoal">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            The Problem
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Your Countertops Are Under Attack
-          </h2>
-          <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Every day, your premium surfaces face damage from normal use.
-            Without protection, the damage is permanent and expensive.
-          </p>
-        </div>
+        <SectionHeader
+          label="The Problem"
+          title="Your Countertops Are Under Attack"
+          description="Every day, your premium surfaces face damage from normal use. Without protection, the damage is permanent and expensive."
+        />
 
         <div className="grid md:grid-cols-3 gap-8">
           {problems.map((problem) => (

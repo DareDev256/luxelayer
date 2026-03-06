@@ -1,3 +1,5 @@
+import SectionHeader from "./SectionHeader";
+
 const services = [
   {
     title: "Countertop Protection",
@@ -41,19 +43,11 @@ export default function Services() {
   return (
     <section id="services" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-gold text-sm font-medium tracking-[0.2em] uppercase mb-4">
-            Our Services
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Protection That&apos;s Invisible, Performance That&apos;s Not
-          </h2>
-          <p className="text-warm-gray/50 max-w-2xl mx-auto">
-            Professional-grade protection film engineered for interior surfaces.
-            See-through protection that lets the natural beauty of your
-            countertops shine.
-          </p>
-        </div>
+        <SectionHeader
+          label="Our Services"
+          title="Protection That's Invisible, Performance That's Not"
+          description="Professional-grade protection film engineered for interior surfaces. See-through protection that lets the natural beauty of your countertops shine."
+        />
 
         <div className="grid md:grid-cols-3 gap-8">
           {services.map((service) => (
