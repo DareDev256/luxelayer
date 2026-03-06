@@ -13,8 +13,8 @@ Homeowners spend thousands on exotic granite, marble, and quartz countertops —
 ## Features
 
 - **Full landing page** — Hero, Problem/Solution, Services, How It Works, Surface Types, Surface Finder, Gallery, Testimonials, FAQ, and CTA sections
-- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA
-- **Real photography** — Actual project photos of exotic granite countertops, no stock imagery
+- **Interactive Surface Finder** — Personalized quiz where users select their countertop material and get a tailored risk assessment with protection recommendation and inline CTA. Result panel uses CSS grid row animation for smooth expand *and* collapse transitions
+- **Real photography** — Actual project photos of exotic granite countertops, no stock imagery. Gallery captions are always visible on touch devices (mobile-first), hover overlay on desktop
 - **Dark luxury aesthetic** — Charcoal/gold palette with intentional typography and spacing
 - **Responsive layout** — Mobile-first design that works from 320px to ultrawide
 - **SEO-optimized** — Open Graph metadata, semantic HTML, keyword-rich content

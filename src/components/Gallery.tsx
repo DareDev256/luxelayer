@@ -73,11 +73,11 @@ export default function Gallery() {
                 </div>
               </div>
             )}
-            {/* Overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            {/* Caption — always visible on mobile, hover overlay on desktop */}
+            <div className="md:absolute md:inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 md:p-6">
               <div>
-                <h3 className="text-white font-semibold">{item.title}</h3>
-                <p className="text-warm-gray/60 text-sm">
+                <h3 className="text-white font-semibold text-sm md:text-base">{item.title}</h3>
+                <p className="text-warm-gray/60 text-xs md:text-sm">
                   {item.description}
                 </p>
               </div>

@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.8.2] - 2026-03-06
+
+### Fixed
+- `SurfaceFinder` result panel had broken expand/collapse animation — conditional render (`{profile && ...}`) inside a `max-height` transition container meant content unmounted instantly on deselect (no collapse animation) and popped into a zero-height container on select (janky expand). Replaced with always-mounted content using CSS `grid-template-rows: 0fr/1fr` transition. A `lastSelected` state preserves the displayed profile during the collapse animation so text doesn't vanish mid-transition. Interactive links inside the collapsed panel get `tabIndex={-1}` to prevent focus on hidden content (WCAG 2.4.3)
+- Gallery hover overlay was invisible on touch/mobile devices — `opacity-0 group-hover:opacity-100` meant title and description for image cards were completely inaccessible without a mouse (WCAG 2.1 SC 1.3.1). Captions now render inline on mobile (`< md`) with the gradient overlay pattern reserved for desktop hover only via responsive `md:absolute md:opacity-0 md:group-hover:opacity-100`
+- Empty state prompt in SurfaceFinder now fades out with a smooth opacity transition instead of conditionally unmounting
+
 ## [0.8.1] - 2026-03-06
 
 ### Fixed

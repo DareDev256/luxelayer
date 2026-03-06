@@ -67,7 +67,20 @@ const profiles: SurfaceProfile[] = [
 
 export default function SurfaceFinder() {
   const [selected, setSelected] = useState<number | null>(null);
+  // Track the last-selected index so the panel content stays visible
+  // during the collapse animation instead of unmounting instantly.
+  const [lastSelected, setLastSelected] = useState(0);
   const profile = selected !== null ? profiles[selected] : null;
+  const display = profile ?? profiles[lastSelected];
+
+  const handleSelect = (i: number) => {
+    if (selected === i) {
+      setSelected(null);
+    } else {
+      setSelected(i);
+      setLastSelected(i);
+    }
+  };
 
   return (
     <Section id="surface-finder" variant="muted" maxWidth="4xl">
@@ -84,7 +97,7 @@ export default function SurfaceFinder() {
             key={p.name}
             role="radio"
             aria-checked={selected === i}
-            onClick={() => setSelected(selected === i ? null : i)}
+            onClick={() => handleSelect(i)}
             className={`
               px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-300
               ${selected === i
@@ -98,25 +111,27 @@ export default function SurfaceFinder() {
         ))}
       </div>
 
-      {/* Result panel */}
+      {/* Result panel — always mounted so CSS transitions play on both expand and collapse */}
       <div
-        className={`
-          overflow-hidden transition-all duration-500 ease-out
-          ${profile ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}
-        `}
+        className="grid transition-[grid-template-rows,opacity] duration-500 ease-out"
+        style={{
+          gridTemplateRows: profile ? "1fr" : "0fr",
+          opacity: profile ? 1 : 0,
+        }}
         aria-live="polite"
+        aria-hidden={!profile}
       >
-        {profile && (
+        <div className="overflow-hidden">
           <div className="border border-gold/15 rounded-lg p-8 bg-[#151515]">
             {/* Header row */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
               <div>
-                <h3 className="text-2xl font-semibold text-gold">{profile.name}</h3>
-                <p className="text-warm-gray/40 text-sm mt-1">{profile.tagline}</p>
+                <h3 className="text-2xl font-semibold text-gold">{display.name}</h3>
+                <p className="text-warm-gray/40 text-sm mt-1">{display.tagline}</p>
               </div>
-              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${profile.riskColor}`}>
+              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider ${display.riskColor}`}>
                 <Icon name="alert" className="w-3.5 h-3.5" />
-                {profile.riskLevel} Risk
+                {display.riskLevel} Risk
               </span>
             </div>
 
@@ -126,7 +141,7 @@ export default function SurfaceFinder() {
               <div>
                 <h4 className="text-xs uppercase tracking-wider text-warm-gray/30 mb-3 font-semibold">Without Protection</h4>
                 <ul className="space-y-2.5">
-                  {profile.threats.map((threat) => (
+                  {display.threats.map((threat) => (
                     <li key={threat} className="flex items-start gap-2.5 text-sm text-warm-gray/60">
                       <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-400/60 shrink-0" />
                       {threat}
@@ -138,10 +153,11 @@ export default function SurfaceFinder() {
               {/* Protection */}
               <div>
                 <h4 className="text-xs uppercase tracking-wider text-warm-gray/30 mb-3 font-semibold">LuxeLayer Solution</h4>
-                <p className="text-sm text-warm-gray/70 leading-relaxed mb-5">{profile.protection}</p>
+                <p className="text-sm text-warm-gray/70 leading-relaxed mb-5">{display.protection}</p>
                 <a
                   href="#contact"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-charcoal bg-gold px-5 py-2.5 rounded hover:bg-gold-light transition-colors duration-200"
+                  tabIndex={profile ? 0 : -1}
                 >
                   Get a Quote
                   <Icon name="bolt" className="w-3.5 h-3.5" />
@@ -149,15 +165,17 @@ export default function SurfaceFinder() {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Empty state prompt */}
-      {!profile && (
-        <p className="text-center text-warm-gray/25 text-sm">
-          Tap a surface above to see your personalized protection plan
-        </p>
-      )}
+      {/* Empty state prompt — fades out when a profile is selected */}
+      <p
+        className="text-center text-warm-gray/25 text-sm transition-opacity duration-300"
+        style={{ opacity: profile ? 0 : 1, height: profile ? 0 : "auto", overflow: "hidden" }}
+        aria-hidden={!!profile}
+      >
+        Tap a surface above to see your personalized protection plan
+      </p>
     </Section>
   );
 }
