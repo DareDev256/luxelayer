@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Icon from "./Icon";
+import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 
 const galleryItems = [
@@ -39,53 +40,51 @@ const galleryItems = [
 
 export default function Gallery() {
   return (
-    <section id="gallery" className="py-24 px-6 bg-charcoal">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          label="Our Work"
-          title="See the Invisible Difference"
-          description="Real projects, real protection. Every surface looks exactly the same — because the best protection is the kind you can't see."
-        />
+    <Section id="gallery" variant="muted">
+      <SectionHeader
+        label="Our Work"
+        title="See the Invisible Difference"
+        description="Real projects, real protection. Every surface looks exactly the same — because the best protection is the kind you can't see."
+      />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryItems.map((item) => (
-            <div
-              key={item.title}
-              className="group relative overflow-hidden rounded-lg border border-white/5 hover:border-gold/20 transition-colors duration-300"
-            >
-              {item.src ? (
-                <div className="aspect-[4/3] relative">
-                  <Image
-                    src={item.src}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-              ) : (
-                <div className="aspect-[4/3] bg-charcoal-light flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/10 flex items-center justify-center">
-                      <Icon name="image" className="w-8 h-8 text-gold/50" strokeWidth={1.5} />
-                    </div>
-                    <p className="text-warm-gray/30 text-sm">Coming Soon</p>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {galleryItems.map((item) => (
+          <div
+            key={item.title}
+            className="group relative overflow-hidden rounded-lg border border-white/5 hover:border-gold/20 transition-colors duration-300"
+          >
+            {item.src ? (
+              <div className="aspect-[4/3] relative">
+                <Image
+                  src={item.src}
+                  alt={item.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+              </div>
+            ) : (
+              <div className="aspect-[4/3] bg-charcoal-light flex items-center justify-center">
+                <div className="text-center p-6">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gold/10 flex items-center justify-center">
+                    <Icon name="image" className="w-8 h-8 text-gold/50" strokeWidth={1.5} />
                   </div>
-                </div>
-              )}
-              {/* Overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                <div>
-                  <h3 className="text-white font-semibold">{item.title}</h3>
-                  <p className="text-warm-gray/60 text-sm">
-                    {item.description}
-                  </p>
+                  <p className="text-warm-gray/30 text-sm">Coming Soon</p>
                 </div>
               </div>
+            )}
+            {/* Overlay on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <div>
+                <h3 className="text-white font-semibold">{item.title}</h3>
+                <p className="text-warm-gray/60 text-sm">
+                  {item.description}
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

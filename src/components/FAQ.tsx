@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Icon from "./Icon";
+import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 
 const faqs = [
@@ -51,55 +52,53 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 px-6 bg-charcoal">
-      <div className="max-w-3xl mx-auto">
-        <SectionHeader label="FAQ" title="Common Questions" />
+    <Section id="faq" variant="muted" maxWidth="3xl">
+      <SectionHeader label="FAQ" title="Common Questions" />
 
-        <div className="space-y-3" role="list">
-          {faqs.map((faq, index) => {
-            const isOpen = openIndex === index;
-            const panelId = `faq-panel-${index}`;
-            const triggerId = `faq-trigger-${index}`;
+      <div className="space-y-3" role="list">
+        {faqs.map((faq, index) => {
+          const isOpen = openIndex === index;
+          const panelId = `faq-panel-${index}`;
+          const triggerId = `faq-trigger-${index}`;
 
-            return (
-              <div
-                key={index}
-                className="border border-white/5 rounded-lg overflow-hidden"
-                role="listitem"
+          return (
+            <div
+              key={index}
+              className="border border-white/5 rounded-lg overflow-hidden"
+              role="listitem"
+            >
+              <button
+                id={triggerId}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                className="w-full text-left px-6 py-5 flex items-center justify-between hover:bg-charcoal-light transition-colors"
+                onClick={() => setOpenIndex(isOpen ? null : index)}
               >
-                <button
-                  id={triggerId}
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  className="w-full text-left px-6 py-5 flex items-center justify-between hover:bg-charcoal-light transition-colors"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                >
-                  <span className="font-medium pr-4">{faq.question}</span>
-                  <Icon
-                    name="chevron-down"
-                    className={`w-5 h-5 text-gold shrink-0 transition-transform duration-200 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <div
-                  id={panelId}
-                  role="region"
-                  aria-labelledby={triggerId}
-                  className="grid transition-[grid-template-rows] duration-200 ease-out"
-                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
-                >
-                  <div className="overflow-hidden">
-                    <div className="px-6 pb-5 text-warm-gray/60 leading-relaxed">
-                      {faq.answer}
-                    </div>
+                <span className="font-medium pr-4">{faq.question}</span>
+                <Icon
+                  name="chevron-down"
+                  className={`w-5 h-5 text-gold shrink-0 transition-transform duration-200 ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              <div
+                id={panelId}
+                role="region"
+                aria-labelledby={triggerId}
+                className="grid transition-[grid-template-rows] duration-200 ease-out"
+                style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
+              >
+                <div className="overflow-hidden">
+                  <div className="px-6 pb-5 text-warm-gray/60 leading-relaxed">
+                    {faq.answer}
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </section>
+    </Section>
   );
 }

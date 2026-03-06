@@ -49,6 +49,7 @@ src/
     useActiveSection.ts # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts  # Intersection Observer hook for scroll-triggered visibility
   components/
+    Section.tsx      # Layout wrapper — enforces consistent section padding, max-width, and background alternation
     Icon.tsx         # Shared SVG icon library (9 icons, single source of truth)
     SectionHeader.tsx # Shared gold-label/h2/description header — single source of truth
     ScrollReveal.tsx  # Directional reveal wrapper with stagger support
@@ -142,6 +143,8 @@ Two hooks, same API, different jobs:
 ### Reusable Components
 
 **`Icon`** — Typed SVG icon library with 9 icons (`star`, `shield`, `bolt`, `check`, `alert`, `beaker`, `dollar`, `chevron-down`, `image`). Accepts `name`, `className`, and `strokeWidth`. Renders with `aria-hidden="true"` by default. Automatically handles filled vs. stroked rendering based on the icon type.
+
+**`Section`** — Layout wrapper that enforces consistent section structure: vertical rhythm (`py-24`), horizontal padding (`px-6`), centered max-width container, and background alternation. Accepts `variant` (`"default"` | `"muted"`), `maxWidth` (`"3xl"` | `"4xl"` | `"6xl"`), and `id` for anchor navigation. Uses a static `maxWidthMap` object so Tailwind v4's static analyzer discovers all class names (dynamic template strings get purged).
 
 **`SectionHeader`** — Extracted from 7 section components. Accepts `label` (gold uppercase tag), `title` (h2), and optional `description`. Conditionally removes bottom margin on `h2` when no description follows.
 

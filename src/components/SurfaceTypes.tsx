@@ -1,4 +1,5 @@
 import Icon from "./Icon";
+import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 
 const surfaces = [
@@ -36,34 +37,32 @@ const surfaces = [
 
 export default function SurfaceTypes() {
   return (
-    <section id="surfaces" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          label="We Protect"
-          title="Every Premium Surface"
-          description="Our protection film is engineered for the unique challenges of each material. Tailored protection for every surface type."
-        />
+    <Section id="surfaces">
+      <SectionHeader
+        label="We Protect"
+        title="Every Premium Surface"
+        description="Our protection film is engineered for the unique challenges of each material. Tailored protection for every surface type."
+      />
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {surfaces.map((surface) => (
-            <div
-              key={surface.name}
-              className="bg-charcoal border border-white/5 rounded-lg p-6 hover:border-gold/20 transition-colors duration-300"
-            >
-              <h3 className="text-lg font-semibold mb-2 text-gold">
-                {surface.name}
-              </h3>
-              <p className="text-warm-gray/60 text-sm mb-3">
-                {surface.description}
-              </p>
-              <div className="flex items-center gap-2 text-xs text-warm-gray/40">
-                <Icon name="alert" className="w-3.5 h-3.5 text-red-400/60" />
-                <span>Without protection: {surface.risk}</span>
-              </div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {surfaces.map((surface) => (
+          <div
+            key={surface.name}
+            className="bg-charcoal border border-white/5 rounded-lg p-6 hover:border-gold/20 transition-colors duration-300"
+          >
+            <h3 className="text-lg font-semibold mb-2 text-gold">
+              {surface.name}
+            </h3>
+            <p className="text-warm-gray/60 text-sm mb-3">
+              {surface.description}
+            </p>
+            <div className="flex items-center gap-2 text-xs text-warm-gray/40">
+              <Icon name="alert" className="w-3.5 h-3.5 text-red-400/60" />
+              <span>Without protection: {surface.risk}</span>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

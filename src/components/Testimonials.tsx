@@ -1,4 +1,5 @@
 import Icon from "./Icon";
+import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 
 const testimonials = [
@@ -27,35 +28,33 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeader
-          label="Testimonials"
-          title="Trusted by Homeowners & Businesses"
-        />
+    <Section>
+      <SectionHeader
+        label="Testimonials"
+        title="Trusted by Homeowners & Businesses"
+      />
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.name}
-              className="bg-charcoal border border-white/5 rounded-lg p-8"
-            >
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: testimonial.stars }).map((_, i) => (
-                  <Icon key={i} name="star" className="w-4 h-4 text-gold" />
-                ))}
-              </div>
-              <p className="text-warm-gray/70 leading-relaxed mb-6 italic">
-                &ldquo;{testimonial.quote}&rdquo;
-              </p>
-              <div>
-                <p className="font-semibold text-sm">{testimonial.name}</p>
-                <p className="text-warm-gray/40 text-xs">{testimonial.title}</p>
-              </div>
+      <div className="grid md:grid-cols-3 gap-8">
+        {testimonials.map((testimonial) => (
+          <div
+            key={testimonial.name}
+            className="bg-charcoal border border-white/5 rounded-lg p-8"
+          >
+            <div className="flex gap-1 mb-4">
+              {Array.from({ length: testimonial.stars }).map((_, i) => (
+                <Icon key={i} name="star" className="w-4 h-4 text-gold" />
+              ))}
             </div>
-          ))}
-        </div>
+            <p className="text-warm-gray/70 leading-relaxed mb-6 italic">
+              &ldquo;{testimonial.quote}&rdquo;
+            </p>
+            <div>
+              <p className="font-semibold text-sm">{testimonial.name}</p>
+              <p className="text-warm-gray/40 text-xs">{testimonial.title}</p>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

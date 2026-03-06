@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.8.0] - 2026-03-06
+
+### Changed
+- Extracted `Section` layout component — centralises the `py-24 px-6` / `max-w-{size} mx-auto` / background-alternation pattern that was duplicated across 8 section components into a single source of truth with `variant`, `maxWidth`, and `id` props
+- Refactored Problem, Services, HowItWorks, SurfaceTypes, Gallery, Testimonials, FAQ, and CTA to use `Section` — each component now owns only its content, not its layout scaffolding
+- Extracted `.input-field` CSS utility class — consolidated the 150+ character className string repeated across 5 CTA form inputs into a shared class with proper `::placeholder` and `:focus` pseudo-selectors using design tokens
+- `Section` uses a static `maxWidthMap` object to ensure Tailwind v4 class discovery works (dynamic template strings get purged by the static analyzer)
+
 ## [0.7.2] - 2026-03-06
 
 ### Added
