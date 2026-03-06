@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.14.3] - 2026-03-06
+
+### Fixed
+- **Impure `handleSelect` state updater** — `setLastSelected(i)` was still called inside `setSelected`'s functional updater, the same class of impurity the 0.14.1 fix addressed for `pause()`/`resume()` but missed here. React 19 StrictMode double-invokes updaters to catch exactly this. Extracted to a sequential `setState` call — both calls batch into a single render
+- **Unstable `onToggle` callback** — `playing ? pause : resume` inline ternary created a new function reference on every 100ms tick render, forcing `RotationIndicator` to re-render 10 times/second even when `playing` hadn't changed. Replaced with a memoized `toggleRotation` callback that only recreates when `playing` state actually transitions
+
 ## [0.14.2] - 2026-03-06
 
 ### Security

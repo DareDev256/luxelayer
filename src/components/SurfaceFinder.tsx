@@ -35,6 +35,13 @@ export default function SurfaceFinder() {
   }, [mode]);
 
   const { active, progress, playing, pause, resume } = useRotationCycle(schedule);
+
+  // Stable toggle — `playing` changes far less often than tick renders.
+  // `pause` and `resume` are already referentially stable (useCallback in hook).
+  const toggleRotation = useCallback(() => {
+    if (playing) pause();
+    else resume();
+  }, [playing, pause, resume]);
   const autoProfile = active?.item ?? null;
 
   // Manual selection overrides auto-rotation
@@ -46,11 +53,8 @@ export default function SurfaceFinder() {
   const activeIndex = selected ?? (autoProfile ? profiles.indexOf(autoProfile) : null);
 
   const handleSelect = useCallback((i: number) => {
-    setSelected((prev) => {
-      if (prev === i) return null;          // deselect
-      setLastSelected(i);
-      return i;
-    });
+    setSelected((prev) => (prev === i ? null : i));
+    setLastSelected(i);
   }, []);
 
   // Side effects live outside the state updater — fires after selection state settles
@@ -105,7 +109,7 @@ export default function SurfaceFinder() {
           active={active}
           progress={progress}
           playing={playing}
-          onToggle={playing ? pause : resume}
+          onToggle={toggleRotation}
         />
       )}
 
