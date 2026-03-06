@@ -62,9 +62,18 @@ export function diverseScorePick<T>(
 }
 
 /**
- * Reorders items for maximum visual diversity — alternates by a
- * keyed severity so adjacent entries never share the same category.
- * Returns indices into the original array.
+ * Reorders items for maximum visual diversity — greedy interleaving
+ * that maximises separation between same-category entries.
+ *
+ * Algorithm: each round picks from the largest remaining bucket whose
+ * category differs from the previous pick. Falls back to same-category
+ * only when every other bucket is exhausted (mathematically unavoidable).
+ *
+ * Adjacent duplicates are impossible when the largest bucket size
+ * is ≤ ceil(items.length / 2). When it exceeds that, duplicates are
+ * pushed to the tail rather than scattered unpredictably.
+ *
+ * @returns Indices into the original array, reordered for diversity.
  */
 export function diversityPick<T>(
   items: T[],
@@ -79,16 +88,43 @@ export function diversityPick<T>(
     buckets.get(key)!.push(i);
   }
 
-  // Round-robin from each bucket, largest first
-  const sorted = [...buckets.values()].sort((a, b) => b.length - a.length);
+  // Track consumption position within each bucket
+  const pos = new Map<string, number>();
+  for (const key of buckets.keys()) pos.set(key, 0);
+
+  const remaining = (key: string) =>
+    buckets.get(key)!.length - pos.get(key)!;
+
   const result: number[] = [];
-  let col = 0;
+  let lastKey: string | null = null;
+
   while (result.length < items.length) {
-    for (const bucket of sorted) {
-      if (col < bucket.length) result.push(bucket[col]);
+    let bestKey: string | null = null;
+    let bestRem = -1;
+
+    // Prefer the largest bucket that differs from the last pick
+    for (const [key] of buckets) {
+      const rem = remaining(key);
+      if (rem <= 0 || key === lastKey) continue;
+      if (rem > bestRem) { bestKey = key; bestRem = rem; }
     }
-    col++;
+
+    // Fallback: all remaining items share the last category
+    if (bestKey === null) {
+      for (const [key] of buckets) {
+        const rem = remaining(key);
+        if (rem > 0 && rem > bestRem) { bestKey = key; bestRem = rem; }
+      }
+    }
+
+    if (bestKey === null) break; // safety — shouldn't happen
+
+    const p = pos.get(bestKey)!;
+    result.push(buckets.get(bestKey)![p]);
+    pos.set(bestKey, p + 1);
+    lastKey = bestKey;
   }
+
   return result;
 }
 

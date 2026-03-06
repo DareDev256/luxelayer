@@ -2,6 +2,12 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.10.1] - 2026-03-06
+
+### Fixed
+- **diversityPick adjacent duplicates** — replaced round-robin interleaving with greedy pick algorithm that always selects from the largest remaining bucket whose category differs from the previous pick. The old approach exhausted smaller buckets early, causing the dominant category to stack at the tail (e.g. `H,M,C,H,M,H,H` instead of `H,M,H,C,H,M,H`). Adjacent duplicates now only occur when mathematically unavoidable (dominant bucket > ceil(n/2))
+- **1 new regression test** — verifies a 4-2-1 bucket split produces zero adjacent duplicates (60 tests total, all passing)
+
 ## [0.10.0] - 2026-03-06
 
 ### Added

@@ -102,6 +102,23 @@ describe("diversityPick", () => {
     }
   });
 
+  it("avoids adjacent duplicates when mathematically possible (4-2-1 split)", () => {
+    const items: Surface[] = [
+      { name: "A", risk: "High" },
+      { name: "B", risk: "High" },
+      { name: "C", risk: "High" },
+      { name: "D", risk: "High" },
+      { name: "E", risk: "Medium" },
+      { name: "F", risk: "Medium" },
+      { name: "G", risk: "Moderate" },
+    ];
+    const order = diversityPick(items, (s) => s.risk);
+    // 4 High ≤ ceil(7/2)=4, so zero adjacent duplicates are required
+    for (let i = 1; i < order.length; i++) {
+      expect(items[order[i]].risk).not.toBe(items[order[i - 1]].risk);
+    }
+  });
+
   it("is deterministic — same input always yields same output", () => {
     const a = diversityPick(surfaces, (s) => s.risk);
     const b = diversityPick(surfaces, (s) => s.risk);
