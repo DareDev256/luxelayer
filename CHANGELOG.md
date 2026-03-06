@@ -2,6 +2,13 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.4.0] - 2026-03-06
+
+### Added
+- `useActiveSection` hook — Intersection Observer-based tracker that detects which page section is currently most visible using multi-threshold ratio comparison and asymmetric rootMargin biased to the top 40% of the viewport
+- Active section highlighting in Header navigation — desktop links get a sliding gold underline indicator, mobile menu gets a scaling gold dot prefix
+- `aria-expanded` attribute on mobile hamburger button and `aria-label` on mobile nav landmark for improved screen reader support
+
 ## [0.3.0] - 2026-03-05
 
 ### Added
