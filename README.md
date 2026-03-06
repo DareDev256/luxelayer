@@ -81,7 +81,7 @@ public/               # Static assets — served at site root by Next.js
 
 ### How `public/` Works
 
-Next.js serves everything in `public/` from the site root — `public/gallery-1.jpg` becomes `https://luxelayer.com/gallery-1.jpg`. These files:
+Next.js serves everything in `public/` from the site root — `public/gallery-1.jpg` becomes `https://luxelayer.vercel.app/gallery-1.jpg`. These files:
 
 - **Bypass the Webpack pipeline** — no content hashing, no tree-shaking, no automatic optimization
 - **Are not imported in code** — referenced by URL string (`src="/gallery-1.jpg"`) rather than ES module import

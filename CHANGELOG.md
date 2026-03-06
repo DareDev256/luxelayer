@@ -2,6 +2,11 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.9.3] - 2026-03-06
+
+### Fixed
+- **Broken domain reference in README** — `luxelayer.com` is a parked domain (302 redirects to a domain marketplace), not the actual deployment. Replaced with `luxelayer.vercel.app` in the `public/` documentation section so the example URL resolves correctly
+
 ## [0.9.2] - 2026-03-06
 
 ### Added
