@@ -33,7 +33,8 @@ Footer
 
 | Module | Role | Purity |
 |--------|------|--------|
-| `src/utils/autoSelect.ts` | Rotation engine: `diverseScorePick`, schedule computation, cycle math | Pure functions — zero side effects |
+| `src/utils/autoSelect.ts` | Rotation engine: `diverseScorePick`, schedule computation, cycle math, `wrapElapsed`, binary-search `activeEntryAt` | Pure functions — zero side effects |
+| `src/hooks/useSchedule.ts` | Mode-based schedule builder: selects diversity algorithm, computes rotation schedule | Pure data pipeline — `useMemo` only |
 | `src/hooks/useRotationCycle.ts` | Timer hook bridging autoSelect to React state | Stateful — owns `elapsed`, `playing` |
 | `src/data/surfaces.ts` | Surface profiles, types, dwell config | Data-only — no imports from components |
 | `src/lib/validation.ts` | Isomorphic contact form validation | Pure — runs on client AND server |

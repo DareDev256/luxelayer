@@ -2,6 +2,14 @@
 
 All notable changes to LuxeLayer are documented here.
 
+## [0.16.0] - 2026-03-07
+
+### Changed
+- **Extracted `useSchedule` hook** — Schedule-building logic (mode-based algorithm selection, diversity ordering, dwell computation) moved from `SurfaceFinder` into a dedicated `src/hooks/useSchedule.ts` hook. SurfaceFinder now focuses purely on interaction logic, reducing its import surface from 5 modules to 3 and eliminating direct coupling to the autoSelect pipeline
+- **Binary search in `activeEntryAt`** — Replaced O(n) reverse linear scan with O(log n) binary search over sorted offsets. Schedule offsets are monotonically increasing by construction, making binary search the correct algorithm. Behaviorally identical for the current 6-entry schedule, but scales correctly as the rotation engine grows
+- **Extracted `wrapElapsed` utility** — The double-modulo pattern `((elapsed % total) + total) % total` was duplicated across `activeEntryAt` and `cycleProgress`. Now a single exported `wrapElapsed(elapsed, total)` function with explicit zero-total guard (returns 0 instead of NaN from `0 % 0`)
+- **Exported `RotationMode` type** — Type alias moved from a component-local definition in SurfaceFinder to the `useSchedule` module, making it importable by any consumer that needs to reference the mode union
+
 ## [0.15.3] - 2026-03-06
 
 ### Added

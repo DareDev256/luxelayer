@@ -160,6 +160,16 @@ export function cycleDuration<T>(schedule: ScheduleEntry<T>[]): number {
 }
 
 /**
+ * Wraps an elapsed time into [0, total) using double-modulo.
+ * Handles negative values gracefully — e.g. -1 maps to total-1.
+ * Returns 0 when total is 0 (prevents NaN from 0%0).
+ */
+export function wrapElapsed(elapsed: number, total: number): number {
+  if (total === 0) return 0;
+  return ((elapsed % total) + total) % total;
+}
+
+/**
  * Which cycle (0-based lap) we're on at a given elapsed time.
  * Handles negative elapsed via double-modulo wrapping.
  */
@@ -174,7 +184,10 @@ export function cycleIndex<T>(
 
 /**
  * Returns the schedule entry active at a given elapsed time.
- * Uses double-modulo to handle negative values gracefully.
+ * Uses binary search over sorted offsets — O(log n) instead of
+ * the previous reverse linear scan. Offsets are monotonically
+ * increasing by construction (computeRotationSchedule), so binary
+ * search is the correct algorithm for this sorted data.
  */
 export function activeEntryAt<T>(
   schedule: ScheduleEntry<T>[],
@@ -184,13 +197,17 @@ export function activeEntryAt<T>(
   const total = cycleDuration(schedule);
   if (total === 0) return null;
 
-  // Double-modulo wraps negatives into [0, total)
-  const t = ((elapsed % total) + total) % total;
+  const t = wrapElapsed(elapsed, total);
 
-  for (let i = schedule.length - 1; i >= 0; i--) {
-    if (t >= schedule[i].offset) return schedule[i];
+  // Binary search: find the rightmost entry whose offset <= t
+  let lo = 0;
+  let hi = schedule.length - 1;
+  while (lo < hi) {
+    const mid = (lo + hi + 1) >>> 1; // ceil to avoid infinite loop on lo=mid
+    if (schedule[mid].offset <= t) lo = mid;
+    else hi = mid - 1;
   }
-  return schedule[0];
+  return schedule[lo];
 }
 
 /**
@@ -205,6 +222,6 @@ export function cycleProgress<T>(
   if (!entry || entry.dwell === 0) return 0;
 
   const total = cycleDuration(schedule);
-  const t = ((elapsed % total) + total) % total;
+  const t = wrapElapsed(elapsed, total);
   return Math.min(1, (t - entry.offset) / entry.dwell);
 }

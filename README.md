@@ -50,10 +50,11 @@ src/
     useActiveSection.ts  # IO-based tracker for which section is in view (powers nav highlighting)
     useScrollReveal.ts   # Intersection Observer hook for scroll-triggered visibility
     useRotationCycle.ts  # Timer-driven auto-rotation hook with schedule-identity auto-reset (bridges autoSelect to React state)
+    useSchedule.ts       # Schedule-building hook — isolates mode-based diversity algorithm selection from UI
   data/
     surfaces.ts          # Surface profile data, types (SurfaceProfile, SurfaceScheduleEntry), dwell config, criticality predicate
   utils/
-    autoSelect.ts        # Pure rotation engine — diversityPick, diverseScorePick (greedy set-cover), schedule computation, cycle math
+    autoSelect.ts        # Pure rotation engine — diversityPick, diverseScorePick (greedy set-cover), schedule computation, cycle math (binary search entry lookup, wrapElapsed utility)
   components/
     Section.tsx      # Layout wrapper — enforces consistent section padding, max-width, and background alternation
     Icon.tsx         # Shared SVG icon library (9 icons, single source of truth)

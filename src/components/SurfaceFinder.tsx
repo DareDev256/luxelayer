@@ -1,38 +1,21 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Section from "./Section";
 import SectionHeader from "./SectionHeader";
 import SurfacePills from "./SurfacePills";
 import SurfaceDetail from "./SurfaceDetail";
-import {
-  diversityPick,
-  diverseScorePick,
-  computeRotationSchedule,
-} from "@/utils/autoSelect";
 import { useRotationCycle } from "@/hooks/useRotationCycle";
+import { useSchedule, type RotationMode } from "@/hooks/useSchedule";
 import RotationIndicator from "./RotationIndicator";
-import { profiles, BASE_DWELL_MS, isCriticalSurface } from "@/data/surfaces";
-
-type RotationMode = "auto" | "diverse";
+import { profiles } from "@/data/surfaces";
 
 export default function SurfaceFinder() {
   const [selected, setSelected] = useState<number | null>(null);
   const [lastSelected, setLastSelected] = useState(0);
   const [mode, setMode] = useState<RotationMode>("auto");
 
-  // Build schedule based on active mode
-  const schedule = useMemo(() => {
-    const order =
-      mode === "diverse"
-        ? diverseScorePick(
-            profiles,
-            [(p) => p.riskLevel, (p) => p.materialType],
-            [25, 15],
-          )
-        : diversityPick(profiles, (p) => p.riskLevel);
-    return computeRotationSchedule(profiles, order, BASE_DWELL_MS, isCriticalSurface);
-  }, [mode]);
+  const schedule = useSchedule(mode);
 
   const { active, progress, playing, pause, resume } = useRotationCycle(schedule);
 
